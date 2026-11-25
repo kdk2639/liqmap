@@ -4,19 +4,19 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%231c2024'/%3E%3C/svg%3E"/>
-<title>금·은·BTC·ETH·HYPE·MU·SOXL·S&amp;P500·QQQ 실시간 청산맵 | 4개 거래소 합산 추정</title>
-<meta name="description" content="금(XAU), 은(XAG), 비트코인, 이더리움, HYPE, 마이크론, SOXL, S&amp;P500, QQQ의 실시간 청산 밀집 추정 맵입니다. 바이낸스·바이비트·OKX·하이퍼리퀴드 공개 미결제약정을 합산합니다. 추정치이며 투자 조언이 아닙니다."/>
-<meta name="keywords" content="청산맵, 금, 은, 비트코인, 이더리움, HYPE, 마이크론, SOXL, S&amp;P500, QQQ, XAU, XAG, 바이낸스, 바이비트, OKX, 하이퍼리퀴드, 청산 히트맵"/>
+<title>금·비트코인·마이크론 실시간 청산맵 | 하이퍼리퀴드 추정</title>
+<meta name="description" content="금(xyz:GOLD), 비트코인(BTC), 마이크론(xyz:MU)의 실시간 청산 밀집 추정 맵입니다. Hyperliquid 공개 시세를 약 20초마다 다시 받습니다. 추정치이며 투자 조언이 아닙니다."/>
+<meta name="keywords" content="청산맵, 금 청산, 비트코인 청산, 마이크론, xyz:GOLD, BTC, 하이퍼리퀴드, 청산 히트맵"/>
 <meta name="author" content="실시간 청산맵"/>
 <meta name="robots" content="index,follow"/>
 <meta property="og:type" content="website"/>
 <meta property="og:locale" content="ko_KR"/>
-<meta property="og:title" content="금·은·BTC·ETH·HYPE·MU·SOXL·S&amp;P500·QQQ 실시간 청산맵"/>
-<meta property="og:description" content="바이낸스·바이비트·OKX·하이퍼리퀴드 공개 시세로 합산한 청산 밀집 추정 맵. 추정치이며 투자 조언이 아닙니다."/>
+<meta property="og:title" content="금·비트코인·마이크론 실시간 청산맵"/>
+<meta property="og:description" content="하이퍼리퀴드 공개 시세로 보는 청산 밀집 추정 맵. 추정치이며 투자 조언이 아닙니다."/>
 <meta property="og:site_name" content="실시간 청산맵"/>
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="금·은·BTC·ETH·HYPE·MU·SOXL·S&amp;P500·QQQ 실시간 청산맵"/>
-<meta name="twitter:description" content="바이낸스·바이비트·OKX·하이퍼리퀴드 공개 시세로 합산한 청산 밀집 추정 맵. 추정치이며 투자 조언이 아닙니다."/>
+<meta name="twitter:title" content="금·비트코인·마이크론 실시간 청산맵"/>
+<meta name="twitter:description" content="하이퍼리퀴드 공개 시세로 보는 청산 밀집 추정 맵. 추정치이며 투자 조언이 아닙니다."/>
 <link rel="canonical" id="canonical" href=""/>
 <style>
   :root {
@@ -66,7 +66,7 @@
     appearance: none; border: 1px solid var(--line); background: var(--card); color: var(--ink);
     border-radius: 999px; padding: 6px 12px; font: inherit; font-size: 13px; cursor: pointer;
   }
-  .tabs { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+  .tabs { display: flex; gap: 6px; margin-top: 10px; }
   .tabs button.on { background: var(--ink); color: var(--bg); border-color: var(--ink); font-weight: 700; }
   .stamp { font-size: 12px; color: var(--muted); }
   .stamp.err { color: var(--red); }
@@ -92,6 +92,16 @@
   .chart-card h2 { font-size: 15px; margin: 0 0 8px; }
   .errs { margin-top: 12px; font-size: 13px; color: var(--red); }
   .errs:empty { display: none; }
+  .venue-controls { display:flex; flex-wrap:wrap; gap:7px; margin:10px 16px 2px; }
+  .venue-controls label { display:inline-flex; align-items:center; gap:5px; border:1px solid var(--line); border-radius:999px; padding:4px 9px; font-size:12px; cursor:pointer; }
+  .venue-controls input { accent-color: var(--blue); }
+  .venue-table { width:calc(100% - 32px); margin:8px 16px 4px; border-collapse:collapse; font-size:12px; }
+  .venue-table th,.venue-table td { padding:5px 4px; border-bottom:1px solid var(--line); text-align:right; }
+  .venue-table th:first-child,.venue-table td:first-child { text-align:left; }
+  .venue-dot { display:inline-block; width:9px; height:9px; border-radius:50%; margin-right:4px; }
+  .status-ok { color:var(--green); } .status-bad { color:var(--red); }
+  .chart-card svg { overflow:visible; }
+  .chart-legend { font-size:12px; color:var(--muted); margin:4px 0; }
   .disc { margin-top: 20px; font-size: 12px; color: var(--muted); }
   .skel { color: var(--muted); padding: 40px 16px; text-align: center; }
   .share { display:flex; flex-wrap:wrap; gap:6px; margin: 8px 0 4px; }
@@ -112,32 +122,6 @@
   .support a { color:var(--blue); }
   .site-foot { margin-top:22px; font-size:12px; color:var(--muted); display:flex; flex-wrap:wrap; gap:10px; }
   .site-foot a { color:var(--muted); }
-
-  .ex-bar { display:flex; flex-wrap:wrap; gap:6px; margin: 8px 0 12px; }
-  .ex-tog {
-    appearance:none; border:1px solid var(--line); background:var(--card); color:var(--ink);
-    border-radius:999px; padding:6px 10px; font:inherit; font-size:12px; cursor:pointer;
-    display:inline-flex; align-items:center; gap:6px;
-  }
-  .ex-tog.on { border-color: var(--ink); font-weight:700; }
-  .ex-tog.off { opacity:0.55; }
-  .ex-tog.fail, .ex-tog.unlisted { cursor:default; opacity:0.7; }
-  .ex-dot { width:8px; height:8px; border-radius:50%; display:inline-block; flex:0 0 auto; }
-  .ex-st { color:var(--muted); font-weight:500; font-size:11px; }
-  .legend { display:flex; gap:12px; flex-wrap:wrap; font-size:12px; color:var(--muted); margin: 6px 16px 0; align-items:center; }
-  .legend i { display:inline-block; width:10px; height:10px; border-radius:2px; margin-right:4px; vertical-align:middle; }
-  .legend-note { color:var(--muted); }
-  .note { font-size:13px; color:var(--warn); margin: 0 0 12px; }
-  .note.coverage { color: var(--muted); }
-  .oi-wrap { width:100%; overflow-x:auto; }
-  .oi-table { width:100%; border-collapse:collapse; font-size:13px; margin-top:4px; min-width:640px; }
-  .oi-table th, .oi-table td { padding:7px 8px; border-bottom:1px solid var(--line); text-align:right; white-space:nowrap; }
-  .oi-table th:first-child, .oi-table td:first-child { text-align:left; }
-  .oi-table .sym { font-size:11px; color:var(--muted); font-weight:500; }
-  .oi-table tr.dim td { opacity:0.55; }
-  .oi-table tfoot td { font-weight:700; }
-  .foot-inline { font-size:12px; color:var(--muted); margin:8px 0 0; }
-  #oi-panel { margin-top:16px; }
   @media (max-width: 480px) {
     header.app { padding:10px 12px 8px; }
     main { padding:12px 10px 72px; }
@@ -145,11 +129,8 @@
     .sub, .bands { font-size:13px; }
     .verdict { font-size:15px; }
     .panel { padding:14px 12px; }
-    .tools button, .tabs button { padding:5px 9px; font-size:12px; }
+    .tools button { padding:5px 9px; font-size:12px; }
     .map-card { padding:4px 0 12px; }
-
-    .ex-tog { padding:5px 8px; font-size:11px; }
-    .oi-table { font-size:12px; }
   }
 </style>
 </head>
@@ -165,14 +146,8 @@
   </div>
   <nav class="tabs" aria-label="자산">
     <button type="button" data-tab="gold" class="on">금</button>
-    <button type="button" data-tab="silver">은</button>
     <button type="button" data-tab="btc">비트코인</button>
-    <button type="button" data-tab="eth">이더리움</button>
-    <button type="button" data-tab="hype">HYPE</button>
     <button type="button" data-tab="mu">마이크론</button>
-    <button type="button" data-tab="soxl">SOXL</button>
-    <button type="button" data-tab="sp500">S&amp;P500</button>
-    <button type="button" data-tab="qqq">QQQ</button>
   </nav>
 </header>
 <div class="ad-slot" id="ad-top" data-slot="top"><div class="ad-label">광고</div><div class="ad-box"></div></div>
@@ -190,11 +165,20 @@
   const ANALYTICS_ID = "";            /* 예: G-XXXXXXXX. 비우면 분석 스크립트 없음 */
   const SITE_URL = "https://kdk2639.github.io/liqmap/";                /* 공개 주소. 있으면 canonical·공유에 사용 */
   const HL = "https://api.hyperliquid.xyz/info";
+  const VENUES = {
+    hyperliquid: {label:"Hyperliquid", color:"#7c3aed", maxLeverage:50},
+    binance: {label:"Binance", color:"#d69e2e", maxLeverage:125},
+    bybit: {label:"Bybit", color:"#ed8936", maxLeverage:100},
+    okx: {label:"OKX", color:"#38a169", maxLeverage:100}
+  };
+  const venueOn = { hyperliquid:true, binance:true, bybit:true, okx:true };
+  function withTimeout(url, opts, ms) { return Promise.race([fetch(url, opts), new Promise(function(_,rej){setTimeout(function(){rej(new Error("timeout"));}, ms||7000);})]); }
+  async function jsonGet(url) { const r=await withTimeout(url, {headers:{Accept:"application/json"}}, 7000); if(!r.ok) throw new Error("HTTP "+r.status); return r.json(); }
+
   const KST = "Asia/Seoul";
   const REFRESH_MS = 20000;
   const RANGE_MIN = 8;
   const STEP = 0.5;
-  const FETCH_MS = 8000;
   function rangeOf(maxL) {
     return Math.max(RANGE_MIN, Math.min(12, Math.ceil(100 / Math.max(maxL || 10, 5)) + 2));
   }
@@ -203,134 +187,32 @@
     { lev: 50, w: 0.15 }, { lev: 100, w: 0.10 }
   ];
 
-  const EX_ORDER = ["binance", "bybit", "okx", "hl"];
-  const EXCHANGES = {
-    binance: { id: "binance", label: "바이낸스", short: "BN", color: "#E8B923" },
-    bybit: { id: "bybit", label: "바이비트", short: "BY", color: "#F5841F" },
-    okx: { id: "okx", label: "OKX", short: "OKX", color: "#6B7280" },
-    hl: { id: "hl", label: "하이퍼리퀴드", short: "HL", color: "#12A594" }
-  };
-
   const ASSETS = {
     gold: {
       id: "gold", tab: "금",
-      title: "금 청산맵 (XAU)",
+      title: "금 청산맵 (xyz:GOLD)",
       coin: "xyz:GOLD", dex: "xyz", digits: 1,
       sibling: { coin: "PAXG", dex: null, name: "PAXG" },
-      venues: {
-        binance: { symbol: "XAUUSDT", maxLev: 50 },
-        bybit: { symbol: "XAUUSDT", maxLev: 50 },
-        okx: { instId: "XAU-USDT-SWAP", maxLev: 100 },
-        hl: { coin: "xyz:GOLD", dex: "xyz" }
-      },
-      foot: "모델 추정 · COMEX 아님 · 실제 청산 주문 아님 · 참고용 · 투자 권유가 아닙니다"
-    },
-    silver: {
-      id: "silver", tab: "은",
-      title: "은 청산맵 (XAG)",
-      coin: "xyz:SILVER", dex: "xyz", digits: 3,
-      venues: {
-        binance: { symbol: "XAGUSDT", maxLev: 50 },
-        bybit: { symbol: "XAGUSDT", maxLev: 100 },
-        okx: { instId: "XAG-USDT-SWAP", maxLev: 100 },
-        hl: { coin: "xyz:SILVER", dex: "xyz" }
-      },
-      foot: "모델 추정 · COMEX 아님 · 실제 청산 주문 아님 · 참고용 · 투자 권유가 아닙니다"
+      pgSymbol: "XAUUSDT",
+      foot: "추정치 · COMEX 아님 · 참고용 · 투자 권유가 아닙니다"
     },
     btc: {
       id: "btc", tab: "비트코인",
       title: "비트코인 청산맵 (BTC)",
       coin: "BTC", dex: null, digits: 1,
-      venues: {
-        binance: { symbol: "BTCUSDT", maxLev: 125 },
-        bybit: { symbol: "BTCUSDT", maxLev: 100 },
-        okx: { instId: "BTC-USDT-SWAP", maxLev: 100 },
-        hl: { coin: "BTC", dex: null }
-      },
-      foot: "모델 추정 · 실제 청산 주문 아님 · 참고용 · 투자 권유가 아닙니다"
-    },
-    eth: {
-      id: "eth", tab: "이더리움",
-      title: "이더리움 청산맵 (ETH)",
-      coin: "ETH", dex: null, digits: 2,
-      venues: {
-        binance: { symbol: "ETHUSDT", maxLev: 125 },
-        bybit: { symbol: "ETHUSDT", maxLev: 100 },
-        okx: { instId: "ETH-USDT-SWAP", maxLev: 100 },
-        hl: { coin: "ETH", dex: null }
-      },
-      foot: "모델 추정 · 실제 청산 주문 아님 · 참고용 · 투자 권유가 아닙니다"
-    },
-    hype: {
-      id: "hype", tab: "HYPE",
-      title: "HYPE 청산맵",
-      coin: "HYPE", dex: null, digits: 3,
-      venues: {
-        binance: { symbol: "HYPEUSDT", maxLev: 75 },
-        bybit: { symbol: "HYPEUSDT", maxLev: 75 },
-        okx: { instId: "HYPE-USDT-SWAP", maxLev: 50 },
-        hl: { coin: "HYPE", dex: null }
-      },
-      foot: "모델 추정 · 하이퍼리퀴드 네이티브 토큰 퍼프 · 실제 청산 주문 아님 · 참고용 · 투자 권유가 아닙니다"
+      pgSymbol: "BTCUSDT",
+      foot: "추정치 · 참고용 · 투자 권유가 아닙니다"
     },
     mu: {
       id: "mu", tab: "마이크론",
-      title: "마이크론 청산맵 (MU)",
+      title: "마이크론 청산맵 (xyz:MU)",
       coin: "xyz:MU", dex: "xyz", digits: 2,
-      venues: {
-        binance: { symbol: "MUUSDT", maxLev: 10 },
-        bybit: { symbol: "MUUSDT", maxLev: 50 },
-        okx: { instId: "MU-USDT-SWAP", maxLev: 50 },
-        hl: { coin: "xyz:MU", dex: "xyz" }
-      },
-      foot: "모델 추정 · 나스닥 현물 주식이 아님 · 실제 청산 주문 아님 · 참고용 · 투자 권유가 아닙니다"
-    },
-    soxl: {
-      id: "soxl", tab: "SOXL",
-      title: "SOXL 청산맵",
-      coin: "xyz:SOXL", dex: "xyz", digits: 3,
-      venues: {
-        binance: { symbol: "SOXLUSDT", maxLev: 20 },
-        bybit: { symbol: "SOXLUSDT", maxLev: 50 },
-        okx: { instId: "SOXL-USDT-SWAP", maxLev: 50 },
-        hl: { coin: "xyz:SOXL", dex: "xyz" }
-      },
-      foot: "모델 추정 · 반도체 3배 ETF 추종 퍼프 · 현물 ETF가 아님 · 실제 청산 주문 아님 · 참고용 · 투자 권유가 아닙니다"
-    },
-    sp500: {
-      id: "sp500", tab: "S&P500",
-      title: "S&P500 청산맵 (지수)",
-      coin: "xyz:SP500", dex: "xyz", digits: 1,
-      venues: {
-        okx: { instId: "US500-USDT-SWAP", maxLev: 20 },
-        hl: { coin: "xyz:SP500", dex: "xyz" }
-      },
-      coverageNote: "이 탭은 S&P 500 지수 퍼프만 합산해요. 하이퍼리퀴드는 xyz:SP500, OKX는 US500-USDT-SWAP이에요. 바이낸스·바이비트에는 지수 퍼프가 없고, SPY ETF는 가격대가 다르며, 밈코인 SPX와 바이비트 CFD는 넣지 않았어요.",
-      foot: "모델 추정 · S&P 500 지수 퍼프 · SPY ETF·밈코인 SPX 아님 · 실제 청산 주문 아님 · 참고용 · 투자 권유가 아닙니다"
-    },
-    qqq: {
-      id: "qqq", tab: "QQQ",
-      title: "QQQ 청산맵 (ETF)",
-      coin: "QQQ", dex: null, digits: 2,
-      venues: {
-        binance: { symbol: "QQQUSDT", maxLev: 10 },
-        bybit: { symbol: "QQQUSDT", maxLev: 50 },
-        okx: { instId: "QQQ-USDT-SWAP", maxLev: 50 }
-      },
-      coverageNote: "이 탭은 Invesco QQQ ETF 퍼프만 합산해요. 하이퍼리퀴드에는 QQQ ETF가 없어요. xyz:XYZ100은 나스닥100 지수, xyz:TQQQ는 3배 ETF라 가격대가 달라 넣지 않았어요.",
-      foot: "모델 추정 · QQQ ETF 추종 퍼프 · 나스닥100 지수·TQQQ 아님 · 실제 청산 주문 아님 · 참고용 · 투자 권유가 아닙니다"
+      pgSymbol: "MUUSDT",
+      foot: "추정치 · 나스닥 현물 주식이 아님 · 참고용 · 투자 권유가 아닙니다"
     }
   };
 
-  const state = {
-    tab: "gold",
-    data: {},
-    errors: [],
-    updating: false,
-    timer: null,
-    theme: "light",
-    enabled: { binance: true, bybit: true, okx: true, hl: true }
-  };
+  const state = { tab: "gold", data: {}, errors: [], updating: false, timer: null, theme: "light" };
 
   function $(id) { return document.getElementById(id); }
   function fmtKst(ms, withSec) {
@@ -339,11 +221,11 @@
     const parts = new Intl.DateTimeFormat("en-GB", opt).formatToParts(new Date(ms));
     const g = function (t) { const h = parts.find(function (x) { return x.type === t; }); return h ? h.value : ""; };
     const core = g("month") + "/" + g("day") + " " + g("hour") + ":" + g("minute") + (withSec ? ":" + g("second") : "");
-    return core + " KST";
+    return withSec ? core + " (한국 표준시)" : core + " KST";
   }
   function fmtNum(n, d) {
     if (n == null || !isFinite(n)) return "—";
-    return Number(n).toLocaleString("en-US", { minimumFractionDigits: d, maximumFractionDigits: d });
+    return n.toLocaleString("en-US", { maximumFractionDigits: d, minimumFractionDigits: d });
   }
   function fmtPx(n, d) { return n == null || !isFinite(n) ? "—" : fmtNum(n, d); }
   function fmtChg(n) {
@@ -352,10 +234,7 @@
   }
   function man(usd) {
     if (usd == null || !isFinite(usd) || usd <= 0) return "";
-    if (usd >= 1e8) return (usd / 1e8).toFixed(1).replace(/\.0$/, "") + "억$";
-    if (usd >= 1e4) return (usd / 1e4).toFixed(0) + "만$";
-    if (usd >= 1e3) return (usd / 1e3).toFixed(1).replace(/\.0$/, "") + "천$";
-    return Math.round(usd) + "$";
+    return (usd / 1e4).toLocaleString("en-US", { maximumFractionDigits: 0 }) + "만$";
   }
   function esc(s) {
     return String(s).replace(/[&<>"']/g, function (c) {
@@ -363,84 +242,16 @@
     });
   }
 
-  function withTimeout(ms) {
-    const ctrl = new AbortController();
-    const t = setTimeout(function () { ctrl.abort(); }, ms || FETCH_MS);
-    return { signal: ctrl.signal, done: function () { clearTimeout(t); } };
-  }
-  async function getJSON(url, opts, ms) {
-    const to = withTimeout(ms);
-    try {
-      const res = await fetch(url, Object.assign({ signal: to.signal }, opts || {}));
-      const text = await res.text();
-      if (!res.ok) {
-        const err = new Error("HTTP " + res.status);
-        err.status = res.status;
-        err.body = text;
-        throw err;
-      }
-      try { return JSON.parse(text); }
-      catch (e) { throw new Error("JSON 파싱 실패"); }
-    } catch (e) {
-      if (e && e.name === "AbortError") throw new Error("시간 초과");
-      throw e;
-    } finally { to.done(); }
-  }
-
-  function classifyErr(e) {
-    const status = e && e.status;
-    const msg = String(e && e.message || e || "");
-    const body = String(e && e.body || "");
-    const blob = (msg + " " + body).toLowerCase();
-    if (status === 451 || /restricted location|unavailable in your region|service unavailable from your location|legal reasons/.test(blob))
-      return "지역 제한";
-    if (status === 403 && /country|cloudfront|blocked access from your/.test(blob))
-      return "지역 제한";
-    if (/failed to fetch|networkerror|load failed|cors|network request failed/.test(blob))
-      return "네트워크 또는 CORS 차단";
-    if (/시간 초과/.test(msg)) return "시간 초과";
-    if (status) return "HTTP " + status;
-    return msg || "조회 실패";
-  }
-  function isUnlisted(e) {
-    const status = e && e.status;
-    const blob = String((e && e.message) || e || "") + " " + String((e && e.body) || "");
-    return status === 400 || status === 404
-      || /invalid symbol|unknown symbol|does not exist|instrument id|not supported symbols?|contracts? 를 찾지|계약을 찾지/i.test(blob);
-  }
-  function failVenue(ex, cfg, kind, err) {
-    return {
-      ex: ex,
-      status: kind,
-      error: err ? classifyErr(err) : (kind === "unlisted" ? "미상장" : "조회 실패"),
-      symbol: venueSymbol(ex, cfg),
-      price: null, mark: null, mid: null, prevDayPx: null, chg: null,
-      funding: null, fundingHours: null, nextFunding: null,
-      oiBase: null, oiUsd: null, maxLeverage: null,
-      candles: [], book: null
-    };
-  }
-  function venueSymbol(ex, cfg) {
-    const v = cfg.venues && cfg.venues[ex];
-    if (!v) return "";
-    return v.symbol || v.instId || v.coin || "";
-  }
-  function okVenue(ex, cfg, row) {
-    row.ex = ex;
-    row.status = "ok";
-    row.error = "";
-    row.symbol = row.symbol || venueSymbol(ex, cfg);
-    return row;
-  }
-
   async function hl(body) {
-    const res = await getJSON(HL, {
+    const res = await fetch(HL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body)
-    }, FETCH_MS);
-    return res;
+    });
+    if (!res.ok) throw new Error("Hyperliquid HTTP " + res.status);
+    return res.json();
   }
+
 
   function findCtx(meta, ctxs, coin) {
     const uni = meta && meta.universe || [];
@@ -449,231 +260,52 @@
     return { meta: uni[i], ctx: ctxs[i] };
   }
 
-  async function loadHL(cfg) {
-    const v = cfg.venues.hl;
+  async function loadPerp(coin, dex) {
     const body = { type: "metaAndAssetCtxs" };
-    if (v.dex) body.dex = v.dex;
+    if (dex) body.dex = dex;
     const pair = await hl(body);
-    const hit = findCtx(pair[0], pair[1], v.coin);
+    const hit = findCtx(pair[0], pair[1], coin);
     const c = hit.ctx;
     const price = Number(c.midPx || c.markPx);
     const prev = Number(c.prevDayPx);
     const oiBase = Number(c.openInterest);
     const now = Date.now();
-    let bars = [], book = null;
-    const tasks = [
-      hl({ type: "candleSnapshot", req: { coin: v.coin, interval: "1h", startTime: now - 72 * 3600 * 1000, endTime: now } })
-        .then(function (candles) {
-          bars = (candles || []).map(function (k) {
-            return { t: Number(k.t), o: Number(k.o), h: Number(k.h), l: Number(k.l), c: Number(k.c), v: Number(k.v) };
-          });
-        }),
-      hl({ type: "l2Book", coin: v.coin, nSigFigs: 3 })
-        .then(function (b) {
-          const levels = b && b.levels || [];
-          const map = function (side) {
-            return (side || []).map(function (x) {
-              const px = Number(x.px), sz = Number(x.sz);
-              return { price: px, sz: sz, usd: px * sz };
-            });
-          };
-          book = { bids: map(levels[0]), asks: map(levels[1]), source: "Hyperliquid L2" };
-        })
-        .catch(function () { book = null; })
-    ];
-    await Promise.all(tasks);
-    return okVenue("hl", cfg, {
+    const candles = await hl({
+      type: "candleSnapshot",
+      req: { coin: coin, interval: "1h", startTime: now - 72 * 3600 * 1000, endTime: now }
+    });
+    const bars = (candles || []).map(function (k) {
+      return { t: Number(k.t), o: Number(k.o), h: Number(k.h), l: Number(k.l), c: Number(k.c), v: Number(k.v) };
+    });
+    let book = null;
+    try {
+      const b = await hl({ type: "l2Book", coin: coin, nSigFigs: 3 });
+      const levels = b && b.levels || [];
+      const map = function (side) {
+        return (side || []).map(function (x) {
+          const px = Number(x.px), sz = Number(x.sz);
+          return { price: px, sz: sz, usd: px * sz };
+        });
+      };
+      book = { bids: map(levels[0]), asks: map(levels[1]), source: "Hyperliquid L2" };
+    } catch (e) {
+      book = null;
+    }
+    return {
+      coin: coin,
       price: price,
       mark: Number(c.markPx),
       mid: c.midPx != null ? Number(c.midPx) : price,
       prevDayPx: prev,
       chg: prev ? (price - prev) / prev : null,
       funding: Number(c.funding),
-      fundingHours: 1,
-      nextFunding: now - (now % 3600000) + 3600000,
       oiBase: oiBase,
       oiUsd: oiBase * price,
       maxLeverage: Number(hit.meta.maxLeverage || 50),
+      nextFunding: now - (now % 3600000) + 3600000,
       candles: bars,
       book: book
-    });
-  }
-
-  async function loadBinance(cfg) {
-    const v = cfg.venues.binance;
-    const sym = v.symbol;
-    const base = "https://fapi.binance.com";
-    const qs = "symbol=" + encodeURIComponent(sym);
-    const pack = await Promise.all([
-      getJSON(base + "/fapi/v1/openInterest?" + qs),
-      getJSON(base + "/fapi/v1/premiumIndex?" + qs),
-      getJSON(base + "/fapi/v1/klines?interval=1h&limit=72&" + qs),
-      getJSON(base + "/fapi/v1/ticker/24hr?" + qs).catch(function () { return null; })
-    ]);
-    const oi = pack[0], px = pack[1], kl = pack[2], tick = pack[3];
-    const mark = Number(px.markPrice || px.lastFundingRate && px.markPrice);
-    const price = Number(px.markPrice || (tick && tick.lastPrice));
-    const prev = tick ? Number(tick.prevClosePrice || tick.openPrice) : null;
-    const oiBase = Number(oi.openInterest);
-    const bars = (kl || []).map(function (k) {
-      return { t: Number(k[0]), o: Number(k[1]), h: Number(k[2]), l: Number(k[3]), c: Number(k[4]), v: Number(k[5]) };
-    }).sort(function (a, b) { return a.t - b.t; });
-    if (!isFinite(price) || price <= 0) throw new Error("Invalid symbol");
-    return okVenue("binance", cfg, {
-      price: price,
-      mark: isFinite(mark) ? mark : price,
-      mid: price,
-      prevDayPx: isFinite(prev) ? prev : null,
-      chg: isFinite(prev) && prev ? (price - prev) / prev : (tick && isFinite(Number(tick.priceChangePercent)) ? Number(tick.priceChangePercent) / 100 : null),
-      funding: Number(px.lastFundingRate),
-      fundingHours: 8,
-      nextFunding: Number(px.nextFundingTime) || null,
-      oiBase: oiBase,
-      oiUsd: oiBase * price,
-      maxLeverage: v.maxLev || 50,
-      candles: bars,
-      book: null
-    });
-  }
-
-  async function loadBybit(cfg) {
-    const v = cfg.venues.bybit;
-    const sym = v.symbol;
-    const base = "https://api.bybit.com/v5/market";
-    const pack = await Promise.all([
-      getJSON(base + "/tickers?category=linear&symbol=" + encodeURIComponent(sym)),
-      getJSON(base + "/kline?category=linear&interval=60&limit=72&symbol=" + encodeURIComponent(sym)),
-      getJSON(base + "/instruments-info?category=linear&symbol=" + encodeURIComponent(sym)).catch(function () { return null; })
-    ]);
-    const tickers = pack[0], kline = pack[1], info = pack[2];
-    if (tickers && tickers.retCode && Number(tickers.retCode) !== 0) {
-      const err = new Error(tickers.retMsg || "Bybit retCode " + tickers.retCode);
-      err.body = JSON.stringify(tickers);
-      if (/not supported|invalid|does not exist|symbol not/i.test(String(tickers.retMsg || ""))) err.status = 400;
-      throw err;
-    }
-    const row = ((tickers && tickers.result && tickers.result.list) || [])[0];
-    if (!row) {
-      const err = new Error("Invalid symbol");
-      err.status = 400;
-      throw err;
-    }
-    const price = Number(row.markPrice || row.lastPrice);
-    const prev = Number(row.prevPrice24h);
-    const oiUsd = Number(row.openInterestValue);
-    const oiBase = Number(row.openInterest);
-    const list = (kline && kline.result && kline.result.list) || [];
-    const bars = list.map(function (k) {
-      return { t: Number(k[0]), o: Number(k[1]), h: Number(k[2]), l: Number(k[3]), c: Number(k[4]), v: Number(k[5]) };
-    }).sort(function (a, b) { return a.t - b.t; });
-    let maxL = v.maxLev || 50;
-    try {
-      const inst = ((info && info.result && info.result.list) || [])[0];
-      const lv = inst && inst.leverageFilter && Number(inst.leverageFilter.maxLeverage);
-      if (isFinite(lv) && lv > 0) maxL = lv;
-    } catch (e) {}
-    if (!isFinite(price) || price <= 0) throw new Error("Invalid symbol");
-    return okVenue("bybit", cfg, {
-      price: price,
-      mark: Number(row.markPrice) || price,
-      mid: Number(row.lastPrice) || price,
-      prevDayPx: isFinite(prev) ? prev : null,
-      chg: isFinite(prev) && prev ? (price - prev) / prev : null,
-      funding: Number(row.fundingRate),
-      fundingHours: 8,
-      nextFunding: Number(row.nextFundingTime) || null,
-      oiBase: isFinite(oiBase) ? oiBase : null,
-      oiUsd: isFinite(oiUsd) ? oiUsd : (isFinite(oiBase) ? oiBase * price : null),
-      maxLeverage: maxL,
-      candles: bars,
-      book: null
-    });
-  }
-
-  function okxFirst(json) {
-    if (!json || String(json.code) !== "0") {
-      const err = new Error((json && json.msg) || "OKX 오류");
-      err.body = JSON.stringify(json || {});
-      if (json && (String(json.code) === "51001" || String(json.code) === "51000")) err.status = 400;
-      throw err;
-    }
-    const row = (json.data || [])[0];
-    if (!row) {
-      const err = new Error("Instrument ID doesn't exist");
-      err.status = 400;
-      throw err;
-    }
-    return row;
-  }
-
-  async function loadOKX(cfg) {
-    const v = cfg.venues.okx;
-    const id = encodeURIComponent(v.instId);
-    const base = "https://www.okx.com/api/v5";
-    const pack = await Promise.all([
-      getJSON(base + "/public/open-interest?instId=" + id),
-      getJSON(base + "/public/mark-price?instId=" + id),
-      getJSON(base + "/public/funding-rate?instId=" + id).catch(function () { return null; }),
-      getJSON(base + "/market/ticker?instId=" + id).catch(function () { return null; }),
-      getJSON(base + "/market/candles?bar=1H&limit=72&instId=" + id),
-      getJSON(base + "/public/instruments?instType=SWAP&instId=" + id).catch(function () { return null; })
-    ]);
-    const oi = okxFirst(pack[0]);
-    const px = okxFirst(pack[1]);
-    let fund = null, tick = null, inst = null;
-    try { if (pack[2]) fund = okxFirst(pack[2]); } catch (e) { fund = null; }
-    try { if (pack[3]) tick = okxFirst(pack[3]); } catch (e) { tick = null; }
-    try { if (pack[5]) inst = okxFirst(pack[5]); } catch (e) { inst = null; }
-    const candlesJson = pack[4];
-    if (!candlesJson || String(candlesJson.code) !== "0") {
-      const err = new Error((candlesJson && candlesJson.msg) || "OKX 캔들 오류");
-      err.body = JSON.stringify(candlesJson || {});
-      throw err;
-    }
-    const price = Number(px.markPx);
-    const prev = tick ? Number(tick.open24h || tick.sodUtc0) : null;
-    const oiUsd = Number(oi.oiUsd);
-    const oiBase = Number(oi.oiCcy || oi.oi);
-    const bars = (candlesJson.data || []).map(function (k) {
-      return { t: Number(k[0]), o: Number(k[1]), h: Number(k[2]), l: Number(k[3]), c: Number(k[4]), v: Number(k[5]) };
-    }).sort(function (a, b) { return a.t - b.t; });
-    let maxL = v.maxLev || 50;
-    const lever = inst && Number(inst.lever);
-    if (isFinite(lever) && lever > 0) maxL = lever;
-    if (!isFinite(price) || price <= 0) throw new Error("Instrument ID doesn't exist");
-    return okVenue("okx", cfg, {
-      price: price,
-      mark: price,
-      mid: tick && Number(tick.last) ? Number(tick.last) : price,
-      prevDayPx: isFinite(prev) ? prev : null,
-      chg: isFinite(prev) && prev ? (price - prev) / prev : null,
-      funding: fund ? Number(fund.fundingRate) : null,
-      fundingHours: 8,
-      nextFunding: fund ? Number(fund.nextFundingTime || fund.fundingTime) : null,
-      oiBase: isFinite(oiBase) ? oiBase : null,
-      oiUsd: isFinite(oiUsd) ? oiUsd : (isFinite(oiBase) ? oiBase * price : null),
-      maxLeverage: maxL,
-      candles: bars,
-      book: null
-    });
-  }
-
-  const LOADERS = { binance: loadBinance, bybit: loadBybit, okx: loadOKX, hl: loadHL };
-
-  async function loadVenue(ex, cfg) {
-    if (!cfg.venues || !cfg.venues[ex] || !LOADERS[ex]) return failVenue(ex, cfg, "unlisted");
-    try {
-      return await LOADERS[ex](cfg);
-    } catch (e) {
-      return failVenue(ex, cfg, isUnlisted(e) ? "unlisted" : "fail", e);
-    }
-  }
-
-  async function loadSibling(cfg) {
-    if (!cfg.sibling) return null;
-    try {
-      return await loadHL({ venues: { hl: { coin: cfg.sibling.coin, dex: cfg.sibling.dex } } });
-    } catch (e) { return null; }
+    };
   }
 
   function levSet(maxL) {
@@ -754,16 +386,15 @@
       bins.push({ price: price * (1 + pct / 100), pct: pct, longUsd: 0, shortUsd: 0 });
     }
     const now = Date.now();
-    const used = (candles || []).filter(function (c) { return (c.t || 0) > now - 72 * 3600 * 1000; });
-    const rows = used.length ? used : (candles || []).slice(-72);
+    const used = candles.filter(function (c) { return (c.t || 0) > now - 72 * 3600 * 1000; });
+    const rows = used.length ? used : candles.slice(-72);
     const volSum = rows.reduce(function (s, c) { return s + (c.v || 0); }, 0) || 1;
-    const hours = perp.fundingHours || 1;
-    const f = (perp.funding || 0) / hours;
+    const f = perp.funding || 0;
     const longW = Math.min(0.7, Math.max(0.3, 0.5 + f * 80));
     const shortW = 1 - longW;
     const levs = levCurve(perp.maxLeverage || 10);
     for (const c of rows) {
-      const share = ((c.v || 0) / volSum) * (oiUsd || 0);
+      const share = ((c.v || 0) / volSum) * oiUsd;
       if (share <= 0) continue;
       const lo = isFinite(c.l) ? c.l : c.c, hi = isFinite(c.h) ? c.h : c.c, cl = c.c || price;
       const mid = (lo + hi) / 2;
@@ -792,88 +423,7 @@
       return [lo, hi];
     };
     const walls = bookWalls(perp.book, price, RANGE);
-    return { price: price, longs: longs, shorts: shorts, bands: { 1: band(1), 3: band(3), 5: band(5) }, walls: walls, mode: "estimate", step: STEP, range: RANGE };
-  }
-
-  function activeVenues(venues, enabled) {
-    return (venues || []).filter(function (v) { return v.status === "ok" && enabled[v.ex] !== false && isFinite(v.price) && v.price > 0 && isFinite(v.oiUsd) && v.oiUsd > 0; });
-  }
-  function pickPrimary(venues, enabled) {
-    const rows = activeVenues(venues, enabled);
-    if (!rows.length) return null;
-    const hl = rows.find(function (v) { return v.ex === "hl"; });
-    if (hl) return hl;
-    return rows.slice().sort(function (a, b) { return (b.oiUsd || 0) - (a.oiUsd || 0); })[0];
-  }
-  function refPriceOf(venues, enabled) {
-    const rows = activeVenues(venues, enabled);
-    if (!rows.length) return null;
-    const hl = rows.find(function (v) { return v.ex === "hl"; });
-    if (hl) return hl.price;
-    let num = 0, den = 0;
-    rows.forEach(function (v) { num += v.price * v.oiUsd; den += v.oiUsd; });
-    return den ? num / den : rows[0].price;
-  }
-
-  function aggregateVenues(venues, enabled) {
-    const primary = pickPrimary(venues, enabled);
-    const price = refPriceOf(venues, enabled);
-    const rows = activeVenues(venues, enabled);
-    if (!price || !rows.length) {
-      return { price: price, longs: [], shorts: [], bands: { 1: [0, 0], 3: [0, 0], 5: [0, 0] }, walls: [], mode: "multi-estimate", step: STEP, range: RANGE_MIN, empty: true, byEx: {}, used: [] };
-    }
-    const maxL = Math.max.apply(null, rows.map(function (v) { return v.maxLeverage || 10; }));
-    const RANGE = rangeOf(maxL);
-    const bins = [];
-    for (let k = -RANGE / STEP; k <= RANGE / STEP; k++) {
-      if (k === 0) continue;
-      const pct = k * STEP;
-      const rec = { price: price * (1 + pct / 100), pct: pct, longUsd: 0, shortUsd: 0, byEx: {} };
-      EX_ORDER.forEach(function (ex) { rec.byEx[ex] = { longUsd: 0, shortUsd: 0 }; });
-      bins.push(rec);
-    }
-    function snapAdd(px, usd, ex, key) {
-      if (!(usd > 0) || !isFinite(px)) return;
-      let best = 0, bestD = Infinity;
-      for (let i = 0; i < bins.length; i++) {
-        const d = Math.abs(bins[i].price - px);
-        if (d < bestD) { bestD = d; best = i; }
-      }
-      if (key === "longUsd" && bins[best].price >= price) return;
-      if (key === "shortUsd" && bins[best].price <= price) return;
-      bins[best][key] += usd;
-      bins[best].byEx[ex][key] += usd;
-    }
-    rows.forEach(function (v) {
-      const m = estimateMap(v);
-      (m.longs || []).forEach(function (r) { snapAdd(r[0], r[1], v.ex, "longUsd"); });
-      (m.shorts || []).forEach(function (r) { snapAdd(r[0], r[1], v.ex, "shortUsd"); });
-    });
-    const longs = bins.filter(function (b) { return b.price < price; }).map(function (b) {
-      return { price: b.price, usd: b.longUsd, byEx: b.byEx };
-    }).sort(function (a, b) { return b.price - a.price; });
-    const shorts = bins.filter(function (b) { return b.price > price; }).map(function (b) {
-      return { price: b.price, usd: b.shortUsd, byEx: b.byEx };
-    }).sort(function (a, b) { return a.price - b.price; });
-    const band = function (pct) {
-      const lo = longs.reduce(function (s, r) { return r.price >= price * (1 - pct / 100) ? s + r.usd : s; }, 0);
-      const hi = shorts.reduce(function (s, r) { return r.price <= price * (1 + pct / 100) ? s + r.usd : s; }, 0);
-      return [lo, hi];
-    };
-    const walls = (primary && primary.book && enabled[primary.ex] !== false) ? bookWalls(primary.book, price, RANGE) : [];
-    return {
-      price: price,
-      longs: longs,
-      shorts: shorts,
-      bands: { 1: band(1), 3: band(3), 5: band(5) },
-      walls: walls,
-      mode: "multi-estimate",
-      step: STEP,
-      range: RANGE,
-      empty: false,
-      used: rows.map(function (v) { return v.ex; }),
-      primaryEx: primary ? primary.ex : null
-    };
+    return { price: price, longs: longs, shorts: shorts, bands: { 1: band(1), 3: band(3), 5: band(5) }, walls: walls, mode: "hl-estimate", step: STEP, range: RANGE };
   }
 
   function bookWalls(book, price, rng) {
@@ -893,9 +443,16 @@
   function verdictOf(D) {
     const b1 = D.bands[1] || D.bands["1"];
     const lo = b1 ? b1[0] : 0, hi = b1 ? b1[1] : 0;
-    if (lo > 1.8 * Math.max(hi, 1) && lo > 0) return "가까운 ±1%는 롱 청산이 더 두꺼워요. 아래로 끌릴 여지가 있어요.";
-    if (hi > 1.8 * Math.max(lo, 1) && hi > 0) return "가까운 ±1%는 숏 청산이 더 두꺼워요. 위로 짧히며 오를 여지가 있어요.";
-    return "가까운 ±1% 롱·숏 청산이 비슷해요. 방향이 한쪽으로 기울진 않았어요.";
+    let s;
+    if (lo > 1.5 * hi) s = "가까운 쪽(±1%)은 롱 청산이 많아 아래로 끌릴 가능성";
+    else if (hi > 1.5 * lo) s = "가까운 쪽(±1%)은 숏 청산이 많아 위로 튈 가능성";
+    else s = "가까운 쪽(±1%)은 롱·숏 청산이 비슷해 방향성 약함";
+    const bigL = D.longs.slice().sort(function (a, b) { return b[1] - a[1]; })[0];
+    const bigS = D.shorts.slice().sort(function (a, b) { return b[1] - a[1]; })[0];
+    const tail = [];
+    if (bigL && bigL[1] > 0) tail.push("아래 " + Math.round(bigL[0]).toLocaleString("en-US"));
+    if (bigS && bigS[1] > 0) tail.push("위 " + Math.round(bigS[0]).toLocaleString("en-US"));
+    return s + (tail.length ? " · 큰 자리: " + tail.join(", ") : "");
   }
 
   function rsi(values, period) {
@@ -911,7 +468,7 @@
   }
 
   function swings(candles, price) {
-    const last = (candles || []).slice(-72);
+    const last = candles.slice(-72);
     const lows = [], highs = [];
     for (let i = 2; i < last.length - 2; i++) {
       if (last[i].l <= last[i - 1].l && last[i].l <= last[i - 2].l && last[i].l <= last[i + 1].l && last[i].l <= last[i + 2].l)
@@ -919,7 +476,7 @@
       if (last[i].h >= last[i - 1].h && last[i].h >= last[i - 2].h && last[i].h >= last[i + 1].h && last[i].h >= last[i + 2].h)
         highs.push(last[i].h);
     }
-    const day = last.slice(-24);
+    const day = candles.slice(-24);
     if (day.length) {
       lows.push(Math.min.apply(null, day.map(function (c) { return c.l; })));
       highs.push(Math.max.apply(null, day.map(function (c) { return c.h; })));
@@ -930,8 +487,6 @@
     };
   }
 
-  function clusterPx(c) { return Array.isArray(c) ? c[0] : c.price; }
-  function clusterUsd(c) { return Array.isArray(c) ? c[1] : (c.usd || 0); }
   function mergeLevels(clusters, swings, price, below) {
     const out = [];
     const near = function (a, b) { return Math.abs(a - b) / price < 0.004; };
@@ -946,9 +501,9 @@
       }
       out.push({ price: px, usd: usd || 0, why: why });
     };
-    const ranked = (clusters || []).slice().filter(function (c) { return clusterUsd(c) > 0; }).sort(function (a, b) { return clusterUsd(b) - clusterUsd(a); });
-    ranked.slice(0, 8).forEach(function (c, i) { add(clusterPx(c), clusterUsd(c), i === 0 ? "가장 두꺼운 청산 밀집" : "청산 밀집"); });
-    (swings || []).slice(0, 4).forEach(function (sv) { add(sv, 0, "최근 스윙"); });
+    const ranked = clusters.slice().filter(function (c) { return c[1] > 0; }).sort(function (a, b) { return b[1] - a[1]; });
+    ranked.slice(0, 8).forEach(function (c, i) { add(c[0], c[1], i === 0 ? "가장 두꺼운 청산 밀집" : "청산 밀집"); });
+    swings.slice(0, 4).forEach(function (sv) { add(sv, 0, "최근 스윙"); });
     const byDist = out.slice().sort(function (a, b) { return Math.abs(a.price - price) - Math.abs(b.price - price); });
     const picked = [];
     const take = function (lv) {
@@ -957,19 +512,19 @@
       picked.push(lv);
     };
     byDist.slice(0, 2).forEach(take);
-    if (ranked[0]) take(out.find(function (x) { return near(x.price, clusterPx(ranked[0])); }) || { price: clusterPx(ranked[0]), usd: clusterUsd(ranked[0]), why: "가장 두꺼운 청산 밀집" });
+    if (ranked[0]) take(out.find(function (x) { return near(x.price, ranked[0][0]); }) || { price: ranked[0][0], usd: ranked[0][1], why: "가장 두꺼운 청산 밀집" });
     byDist.forEach(function (lv) { if (picked.length < 3) take(lv); });
     picked.sort(function (a, b) { return below ? b.price - a.price : a.price - b.price; });
     return picked.slice(0, 3);
   }
 
-  function buildPlan(cfg, perp, D, sibling, pack) {
+  function buildPlan(cfg, perp, D, sibling) {
     const price = perp.price;
     const d = cfg.digits;
     const sw = swings(perp.candles, price);
     const down = mergeLevels(D.longs, sw.lows, price, true);
     const up = mergeLevels(D.shorts, sw.highs, price, false);
-    const closes = (perp.candles || []).map(function (c) { return c.c; });
+    const closes = perp.candles.map(function (c) { return c.c; });
     const r = rsi(closes, 14);
     const b1 = D.bands[1] || [0, 0];
     const longHeavy = b1[0] > 1.5 * b1[1];
@@ -991,15 +546,11 @@
     else if (longHeavy) stance = "눌림 확인 후 분할매수 검토";
     else if (shortHeavy) stance = "위쪽 추격보다는 축소·관망";
 
-    const used = activeVenues(pack.venues, state.enabled);
-    const oiSum = used.reduce(function (s, v) { return s + (v.oiUsd || 0); }, 0);
-    const names = used.map(function (v) { return EXCHANGES[v.ex].label; }).join("·") || "없음";
-    const src = EXCHANGES[perp.ex] ? EXCHANGES[perp.ex].label : "기준";
-    const nowLine = src + " " + (perp.symbol || cfg.coin) + " 기준가 " + fmtPx(price, d) + "달러, 전일(" + fmtPx(perp.prevDayPx, d) + "달러) 대비 " + fmtChg(perp.chg)
-      + "예요. 켜 둔 거래소(" + names + ") 미결제약정 합계는 약 " + fmtPx(oiSum, 0) + "달러예요."
+    const nowLine = "Hyperliquid " + cfg.coin + " 현재가 " + fmtPx(price, d) + "달러, 전일(" + fmtPx(perp.prevDayPx, d) + "달러) 대비 " + fmtChg(perp.chg)
+      + "예요. 시간당 펀딩비 " + (perp.funding >= 0 ? "+" : "") + (perp.funding * 100).toFixed(4) + "%, 미결제약정 "
+      + fmtNum(perp.oiBase, 1) + "계약(약 " + fmtPx(perp.oiUsd, 0) + "달러)이에요."
       + (sibling ? " 같은 화면의 PAXG는 " + fmtPx(sibling.price, 1) + "달러(" + fmtChg(sibling.chg) + ")예요." : "")
-      + (r != null ? " 1시간 RSI는 " + r.toFixed(1) + "예요." : "")
-      + " 청산 구간은 각 거래소 미결제약정과 최근 봉으로 나눈 모델 추정이에요.";
+      + (r != null ? " 1시간 RSI는 " + r.toFixed(1) + "예요." : "");
 
     const weaken = longHeavy
       ? "가까운 ±1%에서 롱 청산 우위가 줄거나 숏 쪽으로 바뀌고, 가격이 1차 하락 목표를 이탈했다가 다시 현재가 위로 회복하면 하락 압력이 약해진 걸로 봐요. 펀딩이 마이너스로 돌아서도 숏 과열 신호가 됩니다. 모두 추정이에요."
@@ -1017,102 +568,22 @@
     };
   }
 
-  function pairUsd(row, side) {
-    if (!row) return 0;
-    if (typeof row.usd === "number") return side === "long" ? (row.price < 0 ? 0 : row.usd) : row.usd;
-    return Array.isArray(row) ? row[1] : (row.usd || 0);
-  }
-  function pairPx(row) { return Array.isArray(row) ? row[0] : row.price; }
-  function pairByEx(row, ex, side) {
-    const key = side === "long" ? "longUsd" : "shortUsd";
-    return (row.byEx && row.byEx[ex] && row.byEx[ex][key]) || 0;
-  }
-
   function svgMap(D, digits) {
-    const p = D.price;
-    const RANGE = D.range || RANGE_MIN;
-    const longs = D.longs || [], shorts = D.shorts || [];
-    const rows = longs.map(function (r) { return { y: pairPx(r), v: r.usd != null ? r.usd : pairUsd(r), side: "long", byEx: r.byEx || {} }; })
-      .concat(shorts.map(function (r) { return { y: pairPx(r), v: r.usd != null ? r.usd : pairUsd(r), side: "short", byEx: r.byEx || {} }; }));
-    const W = 880, padL = 168, padR = 150, padT = 44, padB = 40;
-    const n = Math.max(rows.length, 8);
-    const expected = (RANGE * 2) / STEP;
-    const rowH = 18;
-    const H = padT + padB + Math.max(n, expected) * rowH + 10;
-    const yMin = p * (1 - RANGE / 100);
-    const yMax = p * (1 + RANGE / 100);
-    const yOf = function (px) { return padT + (yMax - px) / (yMax - yMin) * (H - padT - padB); };
-    const vmax = Math.max.apply(null, rows.map(function (r) { return r.v; }).concat([1]));
-    const maxW = W - padL - padR - 8;
-    const minW = Math.max(10, maxW * 0.04);
-    const barW = function (v) {
-      const raw = (v / vmax) * maxW;
-      return v > 0 ? Math.max(raw, minW) : 0;
-    };
-    const barH = Math.max(12, Math.abs(yOf(p * (1 + STEP / 100)) - yOf(p)) * 0.92);
-    const ink = "var(--ink)", muted = "var(--muted)", red = "var(--red)", green = "var(--green)", blue = "var(--blue)";
-    let el = "";
-    el += '<text x="' + padL + '" y="22" fill="' + green + '" font-size="15" font-weight="700">숏 청산 (오르면 터짐)</text>';
-    const usedEx = EX_ORDER.filter(function (ex) {
-      return rows.some(function (r) { return pairByEx(r, ex, r.side) > 0; });
-    });
-    const stackEx = usedEx.length ? usedEx : EX_ORDER.filter(function (ex) { return state.enabled[ex] !== false; });
-    rows.forEach(function (r) {
-      const w = barW(r.v);
-      const y = yOf(r.y) - barH / 2;
-      const faint = (r.v / vmax) < 0.04;
-      const parts = [];
-      let sum = 0;
-      stackEx.forEach(function (ex) {
-        const u = pairByEx(r, ex, r.side);
-        if (u > 0) { parts.push({ ex: ex, u: u }); sum += u; }
-      });
-      if (!parts.length || !sum) {
-        el += '<rect class="liq-bar" data-side="' + r.side + '" data-usd="' + (r.v || 0).toFixed(0) + '" data-px="' + r.y + '" x="' + padL + '" y="' + y.toFixed(2) + '" width="' + w.toFixed(1) + '" height="' + barH.toFixed(2) + '" rx="1.5" fill="' + (r.side === "long" ? red : green) + '" fill-opacity="' + (faint ? "0.38" : "0.9") + '"/>';
-        return;
-      }
-      let x = padL;
-      parts.forEach(function (part, i) {
-        const pw = w * (part.u / sum);
-        const col = EXCHANGES[part.ex].color;
-        const rad = (i === 0 && i === parts.length - 1) ? "1.5" : (i === 0 ? "1.5 0 0 1.5" : (i === parts.length - 1 ? "0 1.5 1.5 0" : "0"));
-        el += '<rect class="liq-bar" data-ex="' + part.ex + '" data-side="' + r.side + '" data-usd="' + part.u.toFixed(0) + '" data-px="' + r.y + '" x="' + x.toFixed(2) + '" y="' + y.toFixed(2) + '" width="' + Math.max(pw, 0).toFixed(1) + '" height="' + barH.toFixed(2) + '" rx="1.5" fill="' + col + '" fill-opacity="' + (faint ? "0.42" : "0.92") + '"/>';
-        x += pw;
-      });
-    });
-    const top = function (side) {
-      return side.slice().sort(function (a, b) { return (b.usd != null ? b.usd : pairUsd(b)) - (a.usd != null ? a.usd : pairUsd(a)); })
-        .filter(function (r) { return (r.usd != null ? r.usd : pairUsd(r)) > 0; }).slice(0, 3);
-    };
-    top(longs).concat(top(shorts)).forEach(function (r) {
-      const usd = r.usd != null ? r.usd : pairUsd(r);
-      const x = padL + barW(usd) + 6;
-      const y = yOf(pairPx(r)) + 4;
-      el += '<text x="' + x.toFixed(1) + '" y="' + y.toFixed(1) + '" fill="' + ink + '" font-size="13" font-weight="800">' + man(usd) + '</text>';
-    });
-    const ticks = rows.map(function (r) { return r.y; }).sort(function (a, b) { return b - a; });
-    const use = ticks.length > 16 ? ticks.filter(function (_, i) { return i % 2 === 0; }) : ticks;
-    use.forEach(function (y) {
-      const pct = (y / p - 1) * 100;
-      const label = fmtPx(y, y >= 1000 ? 0 : digits) + "  (" + (pct >= 0 ? "+" : "") + pct.toFixed(1) + "%)";
-      el += '<text x="' + (padL - 10) + '" y="' + (yOf(y) + 4) + '" text-anchor="end" fill="' + ink + '" font-size="13">' + label + '</text>';
-    });
-    const py = yOf(p);
-    el += '<line x1="' + padL + '" y1="' + py + '" x2="' + (W - padR + 36) + '" y2="' + py + '" stroke="' + ink + '" stroke-width="3"/>';
-    el += '<text x="' + (W - padR + 44) + '" y="' + (py - 8) + '" fill="' + ink + '" font-size="15" font-weight="800">현재가</text>';
-    el += '<text x="' + (W - padR + 44) + '" y="' + (py + 12) + '" fill="' + ink + '" font-size="16" font-weight="800">' + fmtPx(p, digits) + '</text>';
-    (D.walls || []).forEach(function (w) {
-      const wy = yOf(w.price);
-      el += '<line x1="' + padL + '" y1="' + wy + '" x2="' + (W - padR) + '" y2="' + wy + '" stroke="' + blue + '" stroke-width="1.5" stroke-dasharray="5 4"/>';
-      el += '<text x="' + (W - padR + 8) + '" y="' + (wy - 6) + '" fill="' + blue + '" font-size="11" font-weight="700">' + (w.kind === "bid" ? "매수벽" : "매도벽") + " " + fmtPx(w.price, digits) + '</text>';
-      el += '<text x="' + (W - padR + 8) + '" y="' + (wy + 8) + '" fill="' + blue + '" font-size="11">' + man(w.usd) + '</text>';
-    });
-    el += '<text x="' + padL + '" y="' + (H - 12) + '" fill="' + red + '" font-size="15" font-weight="700">롱 청산 (내리면 터짐)</text>';
-    return '<svg id="liq-svg" data-range="' + RANGE + '" data-step="' + STEP + '" data-bins="' + rows.length + '" data-used="' + (D.used || []).join(",") + '" viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="청산맵">' + el + '</svg>';
+    const p=D.price, RANGE=D.range||RANGE_MIN, venues=(D.venues||[]).filter(function(v){return venueOn[v.id] && v.map;});
+    const rows=[]; venues.forEach(function(v){ (v.map.longs||[]).concat(v.map.shorts||[]).forEach(function(r){rows.push({y:r[0],v:r[1],side:r[0]<v.map.price?"long":"short",venue:v});}); });
+    const W=880,padL=168,padR=150,padT=44,padB=40,n=Math.max(rows.length,8),expected=(RANGE*2)/STEP,rowH=18,H=padT+padB+Math.max(n,expected)*rowH+10;
+    const yMin=p*(1-RANGE/100),yMax=p*(1+RANGE/100),yOf=function(px){return padT+(yMax-px)/(yMax-yMin)*(H-padT-padB);};
+    const grouped={}; rows.forEach(function(r){const k=(r.y/p-1).toFixed(4); (grouped[k]||(grouped[k]={y:r.y,parts:[]})).parts.push(r);});
+    const all=Object.keys(grouped).map(function(k){return grouped[k];}); const vmax=Math.max.apply(null,all.map(function(g){return g.parts.reduce(function(a,r){return a+r.v;},0);}).concat([1])); const maxW=W-padL-padR-8;
+    let el='<text x="'+padL+'" y="22" fill="var(--green)" font-size="15" font-weight="700">거래소별 숏 청산 (오르면 터짐)</text>';
+    all.forEach(function(g){let x=padL; const y=yOf(g.y)-Math.max(12,Math.abs(yOf(p*(1+STEP/100))-yOf(p))*.92)/2; g.parts.forEach(function(r){const w=Math.max(2,(r.v/vmax)*maxW); el+='<rect class="liq-bar" data-side="'+r.side+'" data-venue="'+r.venue.id+'" data-usd="'+r.v.toFixed(0)+'" x="'+x.toFixed(1)+'" y="'+y.toFixed(1)+'" width="'+w.toFixed(1)+'" height="'+Math.max(12,Math.abs(yOf(p*(1+STEP/100))-yOf(p))*.92).toFixed(1)+'" rx="1.5" fill="'+r.venue.color+'" fill-opacity=".88"><title>'+r.venue.label+' · '+man(r.v)+'</title></rect>'; x+=w;});});
+    const ticks=all.map(function(g){return g.y;}).sort(function(a,b){return b-a;}); (ticks.length>16?ticks.filter(function(_,i){return i%2===0;}):ticks).forEach(function(y){const pct=(y/p-1)*100;el+='<text x="'+(padL-10)+'" y="'+(yOf(y)+4)+'" text-anchor="end" fill="var(--ink)" font-size="13">'+fmtPx(y,y>=1000?0:digits)+' ('+(pct>=0?'+':'')+pct.toFixed(1)+'%)</text>';});
+    const py=yOf(p); el+='<line x1="'+padL+'" y1="'+py+'" x2="'+(W-padR+36)+'" y2="'+py+'" stroke="var(--ink)" stroke-width="3"/><text x="'+(W-padR+44)+'" y="'+(py-8)+'" fill="var(--ink)" font-size="15" font-weight="800">현재가</text><text x="'+(W-padR+44)+'" y="'+(py+12)+'" fill="var(--ink)" font-size="16" font-weight="800">'+fmtPx(p,digits)+'</text>';
+    el+='<text x="'+padL+'" y="'+(H-12)+'" fill="var(--red)" font-size="15" font-weight="700">거래소별 롱 청산 (내리면 터짐)</text>'; return '<svg id="liq-svg" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="거래소별 청산맵">'+el+'</svg>';
   }
 
   function svgPrice(perp, digits) {
-    const bars = (perp.candles || []).slice(-48);
+    const bars = perp.candles.slice(-48);
     if (bars.length < 4) return "<p>봉 데이터가 부족합니다.</p>";
     const W = 840, H = 160, pL = 58, pR = 16, pT = 16, pB = 24;
     const min = Math.min.apply(null, bars.map(function (b) { return b.l; }));
@@ -1133,106 +604,17 @@
     return '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="1시간 종가">' + el + '</svg>';
   }
 
-  function sourceLine(cfg, pack, at) {
-    const used = activeVenues(pack.venues, state.enabled);
-    const names = used.map(function (v) { return EXCHANGES[v.ex].label; }).join("·") || "없음";
-    const bits = [fmtKst(at, false), names + " 미결제약정·봉으로 추정", "OI 비중으로 합산"];
-    const prim = pickPrimary(pack.venues, state.enabled);
-    if (prim && prim.book) bits.push("호가는 " + EXCHANGES[prim.ex].label + " L2");
-    return bits.join(" · ");
-  }
+  function binanceSymbol(cfg){ return cfg.id==='btc'?'BTCUSDT':cfg.id==='gold'?'XAUUSDT':'MUUSDT'; }
+  function bybitSymbol(cfg){ return cfg.id==='btc'?'BTCUSDT':cfg.id==='gold'?'XAUUSDT':'MUUSDT'; }
+  function okxSymbol(cfg){ return cfg.id==='btc'?'BTC-USDT-SWAP':cfg.id==='gold'?'XAU-USDT-SWAP':'MU-USDT-SWAP'; }
+  function barsFrom(rows, mode){ return (rows||[]).slice().reverse().map(function(k){return mode==='okx'?{t:+k[0],o:+k[1],h:+k[2],l:+k[3],c:+k[4],v:+k[5]}:{t:+k[0],o:+k[1],h:+k[2],l:+k[3],c:+k[4],v:+(mode==='bybit'?k[6]:k[5])};}).filter(function(x){return x.c>0;}); }
+  async function loadBinance(cfg){const sy=binanceSymbol(cfg), base='https://fapi.binance.com'; const q=await Promise.all([jsonGet(base+'/fapi/v1/premiumIndex?symbol='+sy),jsonGet(base+'/fapi/v1/openInterest?symbol='+sy),jsonGet(base+'/fapi/v1/klines?symbol='+sy+'&interval=1h&limit=72')]); const c=q[0],price=+c.markPrice; return {id:'binance',label:'Binance',price:price,mark:price,prevDayPx:price/(1+(+c.lastFundingRate||0)),chg:null,funding:+c.lastFundingRate||0,oiBase:+q[1].openInterest,oiUsd:+q[1].openInterest*price,maxLeverage:VENUES.binance.maxLeverage,candles:barsFrom(q[2]),book:null};}
+  async function loadBybit(cfg){const sy=bybitSymbol(cfg),base='https://api.bybit.com/v5/market'; const q=await Promise.all([jsonGet(base+'/tickers?category=linear&symbol='+sy),jsonGet(base+'/kline?category=linear&symbol='+sy+'&interval=60&limit=72')]); const t=q[0].result&&q[0].result.list&&q[0].result.list[0]; if(!t) throw new Error('미상장'); const price=+t.markPrice||+t.lastPrice; return {id:'bybit',label:'Bybit',price:price,mark:price,prevDayPx:+t.prevPrice24h,chg:+t.price24hPcnt,funding:+t.fundingRate||0,oiBase:+t.openInterest,oiUsd:+t.openInterestValue||(+t.openInterest*price),maxLeverage:VENUES.bybit.maxLeverage,candles:barsFrom(q[1].result.list,'bybit'),book:null};}
+  async function loadOkx(cfg){const sy=okxSymbol(cfg),base='https://www.okx.com/api/v5'; const q=await Promise.all([jsonGet(base+'/public/mark-price?instType=SWAP&instId='+sy),jsonGet(base+'/public/open-interest?instType=SWAP&instId='+sy),jsonGet(base+'/public/funding-rate?instType=SWAP&instId='+sy),jsonGet(base+'/market/candles?instId='+sy+'&bar=1H&limit=72')]); const m=q[0].data&&q[0].data[0],oi=q[1].data&&q[1].data[0],fr=q[2].data&&q[2].data[0],price=+m.markPx; if(!price) throw new Error('미상장'); return {id:'okx',label:'OKX',price:price,mark:price,prevDayPx:price,chg:null,funding:+(fr.fundingRate||0),oiBase:+oi.oi,oiUsd:+oi.oi*price,maxLeverage:VENUES.okx.maxLeverage,candles:barsFrom(q[3].data,'okx'),book:null};}
+  function aggregateVenues(loaded){const good=loaded.filter(function(v){return v&&v.perp&&v.perp.oiUsd>0;}); if(!good.length) throw new Error('사용 가능한 거래소 데이터 없음'); const total=good.reduce(function(a,v){return a+v.perp.oiUsd;},0), price=good.reduce(function(a,v){return a+v.perp.price*v.perp.oiUsd;},0)/total, base=good[0].perp; const all=good.map(function(v){return {id:v.perp.id,label:v.perp.label,color:VENUES[v.perp.id].color,perp:v.perp,map:estimateMap(v.perp),oi:v.perp.oiUsd};}); const bins={}; all.forEach(function(v){['longs','shorts'].forEach(function(side){v.map[side].forEach(function(r){const pct=(r[0]/v.perp.price-1)*100,k=pct.toFixed(2); (bins[side]||(bins[side]={}))[k]=(bins[side][k]||0)+r[1];});});}); const D={price:price,range:rangeOf(Math.max.apply(null,all.map(function(v){return v.perp.maxLeverage;}))),longs:Object.keys(bins.longs||{}).map(function(k){return [price*(1+ +k/100),bins.longs[k]];}).sort(function(a,b){return b[0]-a[0];}),shorts:Object.keys(bins.shorts||{}).map(function(k){return [price*(1+ +k/100),bins.shorts[k]];}).sort(function(a,b){return a[0]-b[0];}),bands:{},walls:[],venues:all}; D.bands[1]=[D.longs.filter(function(r){return r[0]>=price*.99;}).reduce(function(a,r){return a+r[1];},0),D.shorts.filter(function(r){return r[0]<=price*1.01;}).reduce(function(a,r){return a+r[1];},0)]; D.bands[3]=[0,0];D.bands[5]=[0,0]; return {perp:Object.assign({},base,{price:price,oiUsd:total,candles:base.candles}),map:D,venues:all,totalOi:total};}
+  function sourceLine(cfg, pack, at) { return [fmtKst(at,false), '거래소 '+pack.venues.filter(function(v){return venueOn[v.id];}).map(function(v){return v.label;}).join(' · ')+' 합산 추정'].join(' · '); }
 
-  function statusLabel(v) {
-    if (!v) return "없음";
-    if (v.status === "ok") return "정상";
-    if (v.status === "unlisted") return "미상장";
-    return v.error || "실패";
-  }
-
-  function exBarHtml(pack) {
-    const venues = pack.venues || [];
-    const by = {};
-    venues.forEach(function (v) { by[v.ex] = v; });
-    const attrs = EX_ORDER.map(function (ex) { return "data-" + ex + "=\"" + ((by[ex] && by[ex].status) || "fail") + "\""; }).join(" ");
-    const btns = EX_ORDER.map(function (ex) {
-      const meta = EXCHANGES[ex];
-      const v = by[ex];
-      const st = v ? v.status : "fail";
-      const on = st === "ok" && state.enabled[ex] !== false;
-      const cls = "ex-tog" + (on ? " on" : " off") + (st !== "ok" ? " " + st : "");
-      const title = st === "ok" ? (meta.label + " · " + (v.symbol || "") + " · OI " + (man(v.oiUsd) || "—")) : (meta.label + " · " + statusLabel(v));
-      const disabled = st !== "ok" ? " aria-disabled=\"true\"" : "";
-      return '<button type="button" class="' + cls + '" data-ex-toggle="' + ex + '"' + disabled + ' title="' + esc(title) + '">' +
-        '<i class="ex-dot" style="background:' + meta.color + '"></i>' + esc(meta.label) +
-        '<span class="ex-st">' + esc(statusLabel(v)) + (st === "ok" && v.oiUsd ? " · " + man(v.oiUsd) : "") + "</span>" +
-        "</button>";
-    }).join("");
-    return '<div class="ex-bar" id="ex-status" ' + attrs + '>' + btns + "</div>";
-  }
-
-  function legendHtml(pack) {
-    const used = activeVenues(pack.venues, state.enabled);
-    if (!used.length) return "";
-    return '<p class="legend">' + used.map(function (v) {
-      return '<span><i style="background:' + EXCHANGES[v.ex].color + '"></i>' + esc(EXCHANGES[v.ex].label) + "</span>";
-    }).join("") + '<span class="legend-note">막대 색은 거래소, 아래는 롱·위는 숏 청산 추정</span></p>';
-  }
-
-  function oiTableHtml(cfg, pack) {
-    const venues = pack.venues || [];
-    const by = {};
-    venues.forEach(function (v) { by[v.ex] = v; });
-    const used = activeVenues(venues, state.enabled);
-    const oiSum = used.reduce(function (s, v) { return s + (v.oiUsd || 0); }, 0);
-    const rows = EX_ORDER.map(function (ex) {
-      const v = by[ex];
-      const meta = EXCHANGES[ex];
-      if (!v) return "";
-      const on = v.status === "ok" && state.enabled[ex] !== false;
-      const share = on && oiSum ? ((v.oiUsd / oiSum) * 100).toFixed(1) + "%" : "—";
-      const fund = (v.funding == null || !isFinite(v.funding)) ? "—"
-        : ((v.funding >= 0 ? "+" : "") + (v.funding * 100).toFixed(4) + "%" + (v.fundingHours ? (v.fundingHours === 1 ? " /1시간" : " /" + v.fundingHours + "시간") : ""));
-      return "<tr class=\"" + (on ? "on" : "dim") + "\">" +
-        "<td>" + esc(meta.label) + "<div class=\"sym\">" + esc(v.symbol || "") + "</div></td>" +
-        "<td>" + esc(statusLabel(v)) + "</td>" +
-        "<td>" + fmtPx(v.price, cfg.digits) + "</td>" +
-        "<td>" + fmtChg(v.chg) + "</td>" +
-        "<td>" + fund + "</td>" +
-        "<td>" + (v.oiUsd ? fmtPx(v.oiUsd, 0) : "—") + "</td>" +
-        "<td>" + share + "</td>" +
-        "<td>" + (v.maxLeverage ? v.maxLeverage + "x" : "—") + "</td>" +
-        "</tr>";
-    }).join("");
-    return '<div class="oi-wrap"><table class="oi-table" id="oi-table">' +
-      "<thead><tr><th>거래소</th><th>상태</th><th>마크</th><th>전일대비</th><th>펀딩</th><th>미결제약정($)</th><th>비중</th><th>최대레버</th></tr></thead>" +
-      "<tbody>" + rows + "</tbody>" +
-      "<tfoot><tr><td>합계 (켠 곳)</td><td>" + used.length + "곳</td><td></td><td></td><td></td><td>" + (oiSum ? fmtPx(oiSum, 0) : "—") + "</td><td>" + (used.length ? "100%" : "—") + "</td><td></td></tr></tfoot>" +
-      "</table></div>";
-  }
-
-  function geoNote(pack) {
-    const venues = pack.venues || [];
-    const geo = venues.filter(function (v) {
-      if (v.status !== "fail") return false;
-      if (v.ex !== "binance" && v.ex !== "bybit") return /지역 제한/.test(v.error || "");
-      return true;
-    });
-    if (!geo.length) return "";
-    const names = geo.map(function (v) { return EXCHANGES[v.ex].label; }).join("·");
-    return '<p class="note" id="geo-note">이 네트워크에서는 ' + esc(names) + " 공개 API가 막혀 합산에서 빠졌어요. 일부 지역에서는 거래소가 접속을 차단하고, 그때는 브라우저에 CORS 오류로 보여요. 한국에서 이 페이지를 열면 네 곳이 모두 들어올 수 있어요.</p>";
-  }
-
-  function coverageNote(cfg) {
-    if (!cfg || !cfg.coverageNote) return "";
-    return '<p class="note coverage" id="coverage-note">' + esc(cfg.coverageNote) + "</p>";
-  }
-
-  function rebuildPack(pack) {
-    const primary = pickPrimary(pack.venues, state.enabled);
-    pack.perp = primary || pack.perp;
-    pack.map = aggregateVenues(pack.venues, state.enabled);
-    return pack;
-  }
+  function venueControls(pack){let h='<div class="chart-legend">색상 = 거래소 · 막대는 거래소별 청산 추정치를 쌓아 표시합니다.</div><div class="venue-controls" aria-label="거래소 표시">'; Object.keys(VENUES).forEach(function(id){h+='<label><input type="checkbox" data-venue="'+id+'" '+(venueOn[id]?'checked':'')+'>'+VENUES[id].label+'</label>';}); h+='</div><table class="venue-table"><thead><tr><th>거래소</th><th>OI (USD)</th><th>비중</th><th>상태</th></tr></thead><tbody>'; pack.venues.forEach(function(v){h+='<tr><td><span class="venue-dot" style="background:'+v.color+'"></span>'+v.label+'</td><td>'+man(v.oi)+'</td><td>'+((v.oi/pack.totalOi)*100).toFixed(1)+'%</td><td class="status-ok">수신</td></tr>';}); ['binance','bybit','okx'].filter(function(id){return !pack.venues.some(function(v){return v.id===id;});}).forEach(function(id){h+='<tr><td>'+VENUES[id].label+'</td><td>—</td><td>—</td><td class="status-bad">실패/미상장</td></tr>';}); h+='</tbody></table>'; return h;}
 
   function render() {
     const cfg = ASSETS[state.tab];
@@ -1242,20 +624,8 @@
       app.innerHTML = '<div class="skel">시세를 불러오는 중입니다.</div><div class="errs">' + esc(state.errors.join(" · ")) + "</div>";
       return;
     }
-    rebuildPack(pack);
     const D = pack.map, perp = pack.perp;
-    if (!perp || !D || D.empty) {
-      app.innerHTML = '<section class="hero"><h1>' + esc(cfg.title) + "</h1></section>" +
-        exBarHtml(pack) +
-        geoNote(pack) +
-        coverageNote(cfg) +
-        '<div class="skel">켜 둔 거래소에서 시세를 받지 못했어요. 배지를 확인하거나 다른 거래소를 켜 보세요.</div>' +
-        oiTableHtml(cfg, pack) +
-        '<div class="errs">' + esc(state.errors.join(" · ")) + "</div>";
-      wireExToggles();
-      return;
-    }
-    const plan = buildPlan(cfg, perp, D, pack.sibling, pack);
+    const plan = buildPlan(cfg, perp, D, pack.sibling);
     const bands = ["1", "3", "5"].map(function (k) {
       const b = D.bands[k] || D.bands[Number(k)];
       if (!b) return "";
@@ -1267,7 +637,6 @@
     }
     const downList = [0, 1, 2].map(function (i) { return "<li>" + (i + 1) + "차: " + esc(plan.zone(plan.down[i], i)) + "</li>"; }).join("");
     const upList = [0, 1, 2].map(function (i) { return "<li>" + (i + 1) + "차: " + esc(plan.zone(plan.up[i], i)) + "</li>"; }).join("");
-    const chartSrc = EXCHANGES[perp.ex] ? EXCHANGES[perp.ex].label : "기준 거래소";
     app.innerHTML =
       '<section class="hero">' +
         "<h1>" + esc(cfg.title) + "</h1>" +
@@ -1280,20 +649,11 @@
           '<a class="share-btn" id="btn-kk" target="_blank" rel="noopener">카카오톡</a>' +
         "</div>" +
       "</section>" +
-      exBarHtml(pack) +
-      geoNote(pack) +
-      coverageNote(cfg) +
       '<section class="map-card">' +
         '<div class="map-wrap" id="liqmap">' + svgMap(D, cfg.digits) + "</div>" +
-        legendHtml(pack) +
         '<p class="bands" id="bands">' + esc(bands) + "</p>" +
         '<p class="verdict" id="verdict">' + esc(verdictOf(D)) + "</p>" +
-        '<p class="foot">' + esc(cfg.foot) + " · 거래소 배지를 눌러 합산에서 빼거나 넣을 수 있어요.</p>" +
-      "</section>" +
-      '<section class="panel" id="oi-panel">' +
-        '<h2>거래소별 미결제약정 <span class="tag">합산 가중치</span></h2>' +
-        oiTableHtml(cfg, pack) +
-        "<p class=\"foot-inline\">비중은 켜 둔 거래소의 미결제약정(달러) 기준이에요. 거래소마다 마크 가격이 조금 다를 수 있어요.</p>" +
+        '<p class="foot">' + esc(cfg.foot) + "</p>" +
       "</section>" +
       '<div class="ad-slot" id="ad-mid" data-slot="mid"><div class="ad-label">광고</div><div class="ad-box"></div></div>' +
       '<section class="panel" id="plan">' +
@@ -1310,95 +670,78 @@
         "<h2>하락 약화 조건 <span class=\"tag\">추정</span></h2><p>" + esc(plan.weaken) + "</p>" +
       "</section>" +
       '<div class="ad-slot" id="ad-mid2" data-slot="mid2"><div class="ad-label">광고</div><div class="ad-box"></div></div>' +
-      '<section class="chart-card"><h2>1시간 종가 (' + esc(chartSrc) + ")</h2>" + svgPrice(perp, cfg.digits) + "</section>" +
+      '<section class="chart-card"><h2>1시간 종가 (Hyperliquid)</h2>' + svgPrice(perp, cfg.digits) + "</section>" +
       '<div class="errs" id="errs">' + esc(state.errors.join(" · ")) + "</div>" +
       '<div class="ad-slot" id="ad-bottom" data-slot="bottom"><div class="ad-label">광고</div><div class="ad-box"></div></div>' +
-      '<p class="disc">이 화면은 바이낸스·바이비트·OKX·하이퍼리퀴드 공개 미결제약정과 최근 1시간 봉, 레버리지 분포 가정으로 만든 참고용 추정치예요. 거래소 전체의 실제 청산 주문을 그대로 보여 주지 않고, 투자 권유가 아니며 손실에 대해 책임지지 않아요. 약 20초마다 다시 조회해요. 한 거래소가 막혀도 나머지는 그대로 계산해요.</p>' +
+      '<p class="disc">이 화면은 공개 시세와 규칙으로 만든 참고용 추정치예요. 거래소 전체의 실제 청산 주문을 그대로 보여 주지 않고, 투자 권유가 아니며 손실에 대해 책임지지 않아요. 약 20초마다 다시 조회해요.</p>' +
       supportHtml() +
       '<nav class="site-foot"><a href="./privacy.html">개인정보 처리방침</a><span>추정치 · 투자 조언 아님</span></nav>';
     wireShare();
-    wireExToggles();
+    document.querySelectorAll("[data-venue]").forEach(function(el){el.addEventListener("change",function(){venueOn[el.getAttribute("data-venue")]=el.checked;render();});});
     paintAds();
   }
 
-  function wireExToggles() {
-    document.querySelectorAll("[data-ex-toggle]").forEach(function (btn) {
-      btn.addEventListener("click", function () {
-        const ex = btn.getAttribute("data-ex-toggle");
-        const pack = state.data[state.tab];
-        const v = pack && (pack.venues || []).find(function (x) { return x.ex === ex; });
-        if (!v || v.status !== "ok") return;
-        state.enabled[ex] = state.enabled[ex] === false;
-        const still = pack && activeVenues(pack.venues, state.enabled).length;
-        if (!still) {
-          state.enabled[ex] = true;
-          toast("적어도 한 곳은 켜 두세요");
-          return;
-        }
-        render();
-      });
-    });
-  }
-
   function publicUrl() {
-    return SITE_URL || (location.origin + location.pathname);
+    if (SITE_URL) return SITE_URL.replace(/\/+$/, "") + "/";
+    if (location.protocol === "http:" || location.protocol === "https:") return location.href.split("#")[0];
+    return "";
   }
-  function shareText() { return "금·은·BTC·ETH·HYPE·MU·SOXL·S&P500·QQQ 실시간 청산맵 (바이낸스·바이비트·OKX·하이퍼리퀴드 합산 추정, 투자 조언 아님)"; }
+  function shareText() { return "금·비트코인·마이크론 실시간 청산맵 (추정, 투자 조언 아님)"; }
   function wireShare() {
-    const url = publicUrl();
+    const url = publicUrl() || location.href;
     const text = shareText();
-    const copy = $("btn-copy");
-    if (copy) copy.addEventListener("click", function () {
-      const val = url;
+    const enc = encodeURIComponent(url);
+    const txt = encodeURIComponent(text);
+    const x = $("btn-x"), tg = $("btn-tg"), kk = $("btn-kk"), cp = $("btn-copy");
+    if (x) x.href = "https://twitter.com/intent/tweet?text=" + txt + "&url=" + enc;
+    if (tg) tg.href = "https://t.me/share/url?url=" + enc + "&text=" + txt;
+    if (kk) kk.href = "https://sharer.kakao.com/picker/link?url=" + enc;
+    if (cp) cp.addEventListener("click", function () {
+      const val = url || location.href;
+      const done = function () { toast("링크를 복사했어요"); };
       if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(val).then(function () { toast("링크를 복사했어요"); }).catch(function () { fallbackCopy(val); });
+        navigator.clipboard.writeText(val).then(done).catch(function () { fallbackCopy(val); });
       } else fallbackCopy(val);
     });
-    const x = $("btn-x");
-    if (x) x.href = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(text) + "&url=" + encodeURIComponent(url);
-    const tg = $("btn-tg");
-    if (tg) tg.href = "https://t.me/share/url?url=" + encodeURIComponent(url) + "&text=" + encodeURIComponent(text);
-    const kk = $("btn-kk");
-    if (kk) kk.href = "https://sharer.kakao.com/talk/friends/picker/link?url=" + encodeURIComponent(url);
   }
   function fallbackCopy(val) {
     const ta = document.createElement("textarea");
     ta.value = val; document.body.appendChild(ta); ta.select();
-    try { document.execCommand("copy"); toast("링크를 복사했어요"); } catch (e) { toast("복사에 실패했어요"); }
+    try { document.execCommand("copy"); toast("링크를 복사했어요"); }
+    catch (e) { toast("복사에 실패했어요. 주소창에서 복사해 주세요."); }
     document.body.removeChild(ta);
   }
   function toast(msg) {
-    const el = $("toast");
-    el.textContent = msg; el.style.display = "block";
-    setTimeout(function () { el.style.display = "none"; }, 1600);
+    const t = $("toast"); if (!t) return;
+    t.textContent = msg; t.style.display = "block";
+    clearTimeout(toast._t); toast._t = setTimeout(function () { t.style.display = "none"; }, 1800);
   }
   function supportHtml() {
     const bits = [];
     if (DONATE_URL) bits.push('<a href="' + esc(DONATE_URL) + '" target="_blank" rel="noopener">후원하기</a>');
-    if (REFERRAL_URL) bits.push('<a href="' + esc(REFERRAL_URL) + '" target="_blank" rel="noopener">' + esc(REFERRAL_LABEL) + "</a>");
+    if (REFERRAL_URL) bits.push('<a href="' + esc(REFERRAL_URL) + '" target="_blank" rel="noopener">' + esc(REFERRAL_LABEL || "추천 링크") + "</a>");
     return bits.length ? '<p class="support">' + bits.join(" · ") + "</p>" : "";
   }
   function paintAds() {
-    if (!ADSENSE_CLIENT) {
-      document.querySelectorAll(".ad-slot").forEach(function (el) { el.classList.remove("on"); el.style.display = "none"; });
-      return;
-    }
-    document.querySelectorAll(".ad-slot").forEach(function (slot) {
-      const key = slot.getAttribute("data-slot");
-      const id = ADSENSE_SLOTS[key];
-      if (!id) { slot.classList.remove("on"); return; }
-      slot.classList.add("on");
-      const box = slot.querySelector(".ad-box");
-      if (!box || box.getAttribute("data-filled")) return;
-      box.setAttribute("data-filled", "1");
+    const on = !!(ADSENSE_CLIENT && /^ca-pub-\d+$/.test(ADSENSE_CLIENT));
+    const slots = { top: $("ad-top"), mid: $("ad-mid"), mid2: $("ad-mid2"), bottom: $("ad-bottom") };
+    Object.keys(slots).forEach(function (k) {
+      const el = slots[k];
+      if (!el) return;
+      if (!on) { el.classList.remove("on"); el.hidden = true; return; }
+      el.hidden = false; el.classList.add("on");
+      const box = el.querySelector(".ad-box");
+      if (!box || box.getAttribute("data-ready")) return;
       const unit = document.createElement("ins");
       unit.className = "adsbygoogle";
       unit.style.display = "block";
       unit.setAttribute("data-ad-client", ADSENSE_CLIENT);
-      unit.setAttribute("data-ad-slot", id);
+      if (ADSENSE_SLOTS[k]) unit.setAttribute("data-ad-slot", ADSENSE_SLOTS[k]);
       unit.setAttribute("data-ad-format", "auto");
       unit.setAttribute("data-full-width-responsive", "true");
+      box.innerHTML = "";
       box.appendChild(unit);
+      box.setAttribute("data-ready", "1");
       try { (window.adsbygoogle = window.adsbygoogle || []).push({}); } catch (e) {}
     });
   }
@@ -1406,21 +749,21 @@
     const canon = $("canonical") || document.getElementById("canonical");
     const url = publicUrl();
     if (canon && url) canon.setAttribute("href", url);
-    if (url && !document.querySelector('meta[property="og:url"]')) {
-      const og = document.createElement("meta");
+    if (url) {
+      const og = document.createElement("meta"); /* set once */
       if (!document.querySelector('meta[property="og:url"]')) {
-        const m = document.createElement("meta"); m.setAttribute("property", "og:url"); m.setAttribute("content", url); document.head.appendChild(m);
+        const m = document.createElement("meta"); m.setAttribute("property", "og:url"); m.content = url; document.head.appendChild(m);
       }
     }
-    if (ADSENSE_CLIENT && !document.getElementById("adsense-script")) {
+    if (ADSENSE_CLIENT && /^ca-pub-\d+$/.test(ADSENSE_CLIENT) && !document.getElementById("adsense-script")) {
       const s = document.createElement("script");
       s.id = "adsense-script";
       s.async = true;
-      s.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=" + encodeURIComponent(ADSENSE_CLIENT);
       s.crossOrigin = "anonymous";
+      s.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=" + encodeURIComponent(ADSENSE_CLIENT);
       document.head.appendChild(s);
     }
-    if (ANALYTICS_ID && !document.getElementById("ga-script")) {
+    if (ANALYTICS_ID && /^G-[A-Z0-9]+$/.test(ANALYTICS_ID) && !document.getElementById("ga-script")) {
       const s = document.createElement("script");
       s.id = "ga-script"; s.async = true;
       s.src = "https://www.googletagmanager.com/gtag/js?id=" + encodeURIComponent(ANALYTICS_ID);
@@ -1429,72 +772,36 @@
       function gtag() { dataLayer.push(arguments); }
       gtag("js", new Date()); gtag("config", ANALYTICS_ID);
     }
+    paintAds();
   }
 
-  async function loadOne(key) {
-    const cfg = ASSETS[key];
-    const errs = [];
-    const results = await Promise.all(EX_ORDER.map(function (ex) { return loadVenue(ex, cfg); }));
-    const venues = results;
-    const hard = venues.filter(function (v) { return v.status === "fail"; });
-    const ok = venues.some(function (v) { return v.status === "ok"; });
-    if (!ok) throw new Error(cfg.tab + " 조회한 거래소 모두에서 시세를 받지 못했어요" + (hard.length ? " (" + hard.map(function (v) { return EXCHANGES[v.ex].label + ": " + (v.error || "실패"); }).join(", ") + ")" : ""));
-    let sibling = null;
-    if (cfg.sibling) {
-      try { sibling = await loadSibling(cfg); } catch (e) { sibling = null; }
-    }
-    const pack = { venues: venues, sibling: sibling, at: Date.now(), errors: errs };
-    rebuildPack(pack);
-    return pack;
-  }
+  async function loadOne(key) { const cfg=ASSETS[key], errors=[], jobs=[loadPerp(cfg.coin,cfg.dex).then(function(p){p.id='hyperliquid';p.label='Hyperliquid';return {perp:p};}).catch(function(e){errors.push('Hyperliquid: '+(e.message||e));return null;})]; if(key==='btc'||key==='gold'||key==='mu'){jobs.push(loadBinance(cfg).then(function(perp){return {perp:perp};}).catch(function(e){errors.push('Binance: '+(e.message||e));return null;}));jobs.push(loadBybit(cfg).then(function(perp){return {perp:perp};}).catch(function(e){errors.push('Bybit: '+(e.message||e));return null;}));jobs.push(loadOkx(cfg).then(function(perp){return {perp:perp};}).catch(function(e){errors.push('OKX: '+(e.message||e));return null;}));} const loaded=await Promise.all(jobs); const pack=aggregateVenues(loaded.filter(Boolean)); pack.at=Date.now(); pack.errors=errors; return pack; }
 
-  const BACKGROUND_MS = 60000;
-  function assetKeys() { return Object.keys(ASSETS); }
-  function collectErrors() {
-    const errs = [];
-    assetKeys().forEach(function (key) {
-      const pack = state.data[key];
-      if (!pack) return;
-      (pack.errors || []).forEach(function (e) { errs.push(e); });
-    });
-    if (state.loadErrors) {
-      assetKeys().forEach(function (key) {
-        if (state.loadErrors[key]) errs.push(state.loadErrors[key]);
-      });
-    }
-    return errs;
-  }
-  async function refreshKeys(keys, opts) {
-    opts = opts || {};
+  async function refresh() {
     if (state.updating) return;
-    keys = keys || assetKeys();
-    if (!keys.length) return;
     state.updating = true;
+    $("btn-refresh").disabled = true;
     const stamp = $("stamp");
-    const quiet = !!opts.quiet && !!state.data[state.tab];
-    if (!quiet) {
-      stamp.textContent = "갱신 중…";
-      stamp.className = "stamp";
-      $("btn-refresh").disabled = true;
-    }
-    state.loadErrors = state.loadErrors || {};
+    stamp.textContent = "갱신 중…";
+    stamp.className = "stamp";
+    const errs = [];
     try {
+      const keys = ["gold", "btc", "mu"];
       const results = await Promise.allSettled(keys.map(loadOne));
       results.forEach(function (r, i) {
         const key = keys[i];
         if (r.status === "fulfilled") {
           state.data[key] = r.value;
-          delete state.loadErrors[key];
+          (r.value.errors || []).forEach(function (e) { errs.push(ASSETS[key].tab + " " + e); });
         } else {
-          state.loadErrors[key] = ASSETS[key].tab + ": " + (r.reason && r.reason.message ? r.reason.message : r.reason);
+          errs.push(ASSETS[key].tab + " Hyperliquid: " + (r.reason && r.reason.message ? r.reason.message : r.reason));
         }
       });
-      state.errors = collectErrors();
+      state.errors = errs;
       const at = Date.now();
       const ok = Object.keys(state.data).length;
       stamp.textContent = "마지막 갱신 " + fmtKst(at, true) + (ok ? " · " + ok + "개 자산" : "");
-      if (state.errors.length && !ok) stamp.className = "stamp err";
-      else stamp.className = "stamp";
+      if (errs.length && !ok) stamp.className = "stamp err";
       render();
     } catch (e) {
       state.errors = [String(e && e.message || e)];
@@ -1506,24 +813,12 @@
       $("btn-refresh").disabled = false;
     }
   }
-  function refresh() { return refreshKeys(assetKeys(), { quiet: false }); }
-  function refreshVisibleAndStale() {
-    const keys = [state.tab];
-    assetKeys().forEach(function (key) {
-      if (key === state.tab) return;
-      const pack = state.data[key];
-      if (!pack || !pack.at || (Date.now() - pack.at > BACKGROUND_MS)) keys.push(key);
-    });
-    return refreshKeys(keys, { quiet: true });
-  }
 
   document.querySelectorAll(".tabs button").forEach(function (btn) {
     btn.addEventListener("click", function () {
       state.tab = btn.getAttribute("data-tab");
       document.querySelectorAll(".tabs button").forEach(function (b) { b.classList.toggle("on", b === btn); });
       render();
-      const pack = state.data[state.tab];
-      if (!pack || !pack.at || (Date.now() - pack.at > REFRESH_MS)) refreshKeys([state.tab], { quiet: !!pack });
     });
   });
   $("btn-refresh").addEventListener("click", function () { refresh(); });
@@ -1535,10 +830,8 @@
 
   bootMonetization();
   refresh();
-  state.timer = setInterval(refreshVisibleAndStale, REFRESH_MS);
-  try { window.__LIQMAP__ = state; } catch (e) {}
+  state.timer = setInterval(refresh, REFRESH_MS);
 })();
-
 </script>
 </body>
 </html>
