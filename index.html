@@ -4,18 +4,18 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%231c2024'/%3E%3C/svg%3E"/>
-<title>금·비트코인·마이크론 실시간 청산맵 | 4개 거래소 합산 추정</title>
-<meta name="description" content="금(XAU), 비트코인(BTC), 마이크론(MU)의 실시간 청산 밀집 추정 맵입니다. 바이낸스·바이비트·OKX·하이퍼리퀴드 공개 미결제약정을 합산합니다. 추정치이며 투자 조언이 아닙니다."/>
-<meta name="keywords" content="청산맵, 금 청산, 비트코인 청산, 마이크론, XAU, BTC, MU, 바이낸스, 바이비트, OKX, 하이퍼리퀴드, 청산 히트맵"/>
+<title>금·은·BTC·ETH·HYPE·MU·SOXL·S&amp;P500·QQQ 실시간 청산맵 | 4개 거래소 합산 추정</title>
+<meta name="description" content="금(XAU), 은(XAG), 비트코인, 이더리움, HYPE, 마이크론, SOXL, S&amp;P500, QQQ의 실시간 청산 밀집 추정 맵입니다. 바이낸스·바이비트·OKX·하이퍼리퀴드 공개 미결제약정을 합산합니다. 추정치이며 투자 조언이 아닙니다."/>
+<meta name="keywords" content="청산맵, 금, 은, 비트코인, 이더리움, HYPE, 마이크론, SOXL, S&amp;P500, QQQ, XAU, XAG, 바이낸스, 바이비트, OKX, 하이퍼리퀴드, 청산 히트맵"/>
 <meta name="author" content="실시간 청산맵"/>
 <meta name="robots" content="index,follow"/>
 <meta property="og:type" content="website"/>
 <meta property="og:locale" content="ko_KR"/>
-<meta property="og:title" content="금·비트코인·마이크론 실시간 청산맵"/>
+<meta property="og:title" content="금·은·BTC·ETH·HYPE·MU·SOXL·S&amp;P500·QQQ 실시간 청산맵"/>
 <meta property="og:description" content="바이낸스·바이비트·OKX·하이퍼리퀴드 공개 시세로 합산한 청산 밀집 추정 맵. 추정치이며 투자 조언이 아닙니다."/>
 <meta property="og:site_name" content="실시간 청산맵"/>
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="금·비트코인·마이크론 실시간 청산맵"/>
+<meta name="twitter:title" content="금·은·BTC·ETH·HYPE·MU·SOXL·S&amp;P500·QQQ 실시간 청산맵"/>
 <meta name="twitter:description" content="바이낸스·바이비트·OKX·하이퍼리퀴드 공개 시세로 합산한 청산 밀집 추정 맵. 추정치이며 투자 조언이 아닙니다."/>
 <link rel="canonical" id="canonical" href=""/>
 <style>
@@ -66,7 +66,7 @@
     appearance: none; border: 1px solid var(--line); background: var(--card); color: var(--ink);
     border-radius: 999px; padding: 6px 12px; font: inherit; font-size: 13px; cursor: pointer;
   }
-  .tabs { display: flex; gap: 6px; margin-top: 10px; }
+  .tabs { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
   .tabs button.on { background: var(--ink); color: var(--bg); border-color: var(--ink); font-weight: 700; }
   .stamp { font-size: 12px; color: var(--muted); }
   .stamp.err { color: var(--red); }
@@ -128,6 +128,7 @@
   .legend i { display:inline-block; width:10px; height:10px; border-radius:2px; margin-right:4px; vertical-align:middle; }
   .legend-note { color:var(--muted); }
   .note { font-size:13px; color:var(--warn); margin: 0 0 12px; }
+  .note.coverage { color: var(--muted); }
   .oi-wrap { width:100%; overflow-x:auto; }
   .oi-table { width:100%; border-collapse:collapse; font-size:13px; margin-top:4px; min-width:640px; }
   .oi-table th, .oi-table td { padding:7px 8px; border-bottom:1px solid var(--line); text-align:right; white-space:nowrap; }
@@ -144,7 +145,7 @@
     .sub, .bands { font-size:13px; }
     .verdict { font-size:15px; }
     .panel { padding:14px 12px; }
-    .tools button { padding:5px 9px; font-size:12px; }
+    .tools button, .tabs button { padding:5px 9px; font-size:12px; }
     .map-card { padding:4px 0 12px; }
 
     .ex-tog { padding:5px 8px; font-size:11px; }
@@ -164,8 +165,14 @@
   </div>
   <nav class="tabs" aria-label="자산">
     <button type="button" data-tab="gold" class="on">금</button>
+    <button type="button" data-tab="silver">은</button>
     <button type="button" data-tab="btc">비트코인</button>
+    <button type="button" data-tab="eth">이더리움</button>
+    <button type="button" data-tab="hype">HYPE</button>
     <button type="button" data-tab="mu">마이크론</button>
+    <button type="button" data-tab="soxl">SOXL</button>
+    <button type="button" data-tab="sp500">S&amp;P500</button>
+    <button type="button" data-tab="qqq">QQQ</button>
   </nav>
 </header>
 <div class="ad-slot" id="ad-top" data-slot="top"><div class="ad-label">광고</div><div class="ad-box"></div></div>
@@ -218,6 +225,18 @@
       },
       foot: "모델 추정 · COMEX 아님 · 실제 청산 주문 아님 · 참고용 · 투자 권유가 아닙니다"
     },
+    silver: {
+      id: "silver", tab: "은",
+      title: "은 청산맵 (XAG)",
+      coin: "xyz:SILVER", dex: "xyz", digits: 3,
+      venues: {
+        binance: { symbol: "XAGUSDT", maxLev: 50 },
+        bybit: { symbol: "XAGUSDT", maxLev: 100 },
+        okx: { instId: "XAG-USDT-SWAP", maxLev: 100 },
+        hl: { coin: "xyz:SILVER", dex: "xyz" }
+      },
+      foot: "모델 추정 · COMEX 아님 · 실제 청산 주문 아님 · 참고용 · 투자 권유가 아닙니다"
+    },
     btc: {
       id: "btc", tab: "비트코인",
       title: "비트코인 청산맵 (BTC)",
@@ -230,17 +249,76 @@
       },
       foot: "모델 추정 · 실제 청산 주문 아님 · 참고용 · 투자 권유가 아닙니다"
     },
+    eth: {
+      id: "eth", tab: "이더리움",
+      title: "이더리움 청산맵 (ETH)",
+      coin: "ETH", dex: null, digits: 2,
+      venues: {
+        binance: { symbol: "ETHUSDT", maxLev: 125 },
+        bybit: { symbol: "ETHUSDT", maxLev: 100 },
+        okx: { instId: "ETH-USDT-SWAP", maxLev: 100 },
+        hl: { coin: "ETH", dex: null }
+      },
+      foot: "모델 추정 · 실제 청산 주문 아님 · 참고용 · 투자 권유가 아닙니다"
+    },
+    hype: {
+      id: "hype", tab: "HYPE",
+      title: "HYPE 청산맵",
+      coin: "HYPE", dex: null, digits: 3,
+      venues: {
+        binance: { symbol: "HYPEUSDT", maxLev: 75 },
+        bybit: { symbol: "HYPEUSDT", maxLev: 75 },
+        okx: { instId: "HYPE-USDT-SWAP", maxLev: 50 },
+        hl: { coin: "HYPE", dex: null }
+      },
+      foot: "모델 추정 · 하이퍼리퀴드 네이티브 토큰 퍼프 · 실제 청산 주문 아님 · 참고용 · 투자 권유가 아닙니다"
+    },
     mu: {
       id: "mu", tab: "마이크론",
       title: "마이크론 청산맵 (MU)",
       coin: "xyz:MU", dex: "xyz", digits: 2,
       venues: {
         binance: { symbol: "MUUSDT", maxLev: 10 },
-        bybit: { symbol: "MUUSDT", maxLev: 25 },
+        bybit: { symbol: "MUUSDT", maxLev: 50 },
         okx: { instId: "MU-USDT-SWAP", maxLev: 50 },
         hl: { coin: "xyz:MU", dex: "xyz" }
       },
       foot: "모델 추정 · 나스닥 현물 주식이 아님 · 실제 청산 주문 아님 · 참고용 · 투자 권유가 아닙니다"
+    },
+    soxl: {
+      id: "soxl", tab: "SOXL",
+      title: "SOXL 청산맵",
+      coin: "xyz:SOXL", dex: "xyz", digits: 3,
+      venues: {
+        binance: { symbol: "SOXLUSDT", maxLev: 20 },
+        bybit: { symbol: "SOXLUSDT", maxLev: 50 },
+        okx: { instId: "SOXL-USDT-SWAP", maxLev: 50 },
+        hl: { coin: "xyz:SOXL", dex: "xyz" }
+      },
+      foot: "모델 추정 · 반도체 3배 ETF 추종 퍼프 · 현물 ETF가 아님 · 실제 청산 주문 아님 · 참고용 · 투자 권유가 아닙니다"
+    },
+    sp500: {
+      id: "sp500", tab: "S&P500",
+      title: "S&P500 청산맵 (지수)",
+      coin: "xyz:SP500", dex: "xyz", digits: 1,
+      venues: {
+        okx: { instId: "US500-USDT-SWAP", maxLev: 20 },
+        hl: { coin: "xyz:SP500", dex: "xyz" }
+      },
+      coverageNote: "이 탭은 S&P 500 지수 퍼프만 합산해요. 하이퍼리퀴드는 xyz:SP500, OKX는 US500-USDT-SWAP이에요. 바이낸스·바이비트에는 지수 퍼프가 없고, SPY ETF는 가격대가 다르며, 밈코인 SPX와 바이비트 CFD는 넣지 않았어요.",
+      foot: "모델 추정 · S&P 500 지수 퍼프 · SPY ETF·밈코인 SPX 아님 · 실제 청산 주문 아님 · 참고용 · 투자 권유가 아닙니다"
+    },
+    qqq: {
+      id: "qqq", tab: "QQQ",
+      title: "QQQ 청산맵 (ETF)",
+      coin: "QQQ", dex: null, digits: 2,
+      venues: {
+        binance: { symbol: "QQQUSDT", maxLev: 10 },
+        bybit: { symbol: "QQQUSDT", maxLev: 50 },
+        okx: { instId: "QQQ-USDT-SWAP", maxLev: 50 }
+      },
+      coverageNote: "이 탭은 Invesco QQQ ETF 퍼프만 합산해요. 하이퍼리퀴드에는 QQQ ETF가 없어요. xyz:XYZ100은 나스닥100 지수, xyz:TQQQ는 3배 ETF라 가격대가 달라 넣지 않았어요.",
+      foot: "모델 추정 · QQQ ETF 추종 퍼프 · 나스닥100 지수·TQQQ 아님 · 실제 청산 주문 아님 · 참고용 · 투자 권유가 아닙니다"
     }
   };
 
@@ -1144,6 +1222,11 @@
     return '<p class="note" id="geo-note">이 네트워크에서는 ' + esc(names) + " 공개 API가 막혀 합산에서 빠졌어요. 일부 지역에서는 거래소가 접속을 차단하고, 그때는 브라우저에 CORS 오류로 보여요. 한국에서 이 페이지를 열면 네 곳이 모두 들어올 수 있어요.</p>";
   }
 
+  function coverageNote(cfg) {
+    if (!cfg || !cfg.coverageNote) return "";
+    return '<p class="note coverage" id="coverage-note">' + esc(cfg.coverageNote) + "</p>";
+  }
+
   function rebuildPack(pack) {
     const primary = pickPrimary(pack.venues, state.enabled);
     pack.perp = primary || pack.perp;
@@ -1165,6 +1248,7 @@
       app.innerHTML = '<section class="hero"><h1>' + esc(cfg.title) + "</h1></section>" +
         exBarHtml(pack) +
         geoNote(pack) +
+        coverageNote(cfg) +
         '<div class="skel">켜 둔 거래소에서 시세를 받지 못했어요. 배지를 확인하거나 다른 거래소를 켜 보세요.</div>' +
         oiTableHtml(cfg, pack) +
         '<div class="errs">' + esc(state.errors.join(" · ")) + "</div>";
@@ -1198,6 +1282,7 @@
       "</section>" +
       exBarHtml(pack) +
       geoNote(pack) +
+      coverageNote(cfg) +
       '<section class="map-card">' +
         '<div class="map-wrap" id="liqmap">' + svgMap(D, cfg.digits) + "</div>" +
         legendHtml(pack) +
@@ -1258,7 +1343,7 @@
   function publicUrl() {
     return SITE_URL || (location.origin + location.pathname);
   }
-  function shareText() { return "금·비트코인·마이크론 실시간 청산맵 (바이낸스·바이비트·OKX·하이퍼리퀴드 합산 추정, 투자 조언 아님)"; }
+  function shareText() { return "금·은·BTC·ETH·HYPE·MU·SOXL·S&P500·QQQ 실시간 청산맵 (바이낸스·바이비트·OKX·하이퍼리퀴드 합산 추정, 투자 조언 아님)"; }
   function wireShare() {
     const url = publicUrl();
     const text = shareText();
@@ -1353,7 +1438,7 @@
     const venues = results;
     const hard = venues.filter(function (v) { return v.status === "fail"; });
     const ok = venues.some(function (v) { return v.status === "ok"; });
-    if (!ok) throw new Error(cfg.tab + " 네 거래소 모두에서 시세를 받지 못했어요" + (hard.length ? " (" + hard.map(function (v) { return EXCHANGES[v.ex].label + ": " + (v.error || "실패"); }).join(", ") + ")" : ""));
+    if (!ok) throw new Error(cfg.tab + " 조회한 거래소 모두에서 시세를 받지 못했어요" + (hard.length ? " (" + hard.map(function (v) { return EXCHANGES[v.ex].label + ": " + (v.error || "실패"); }).join(", ") + ")" : ""));
     let sibling = null;
     if (cfg.sibling) {
       try { sibling = await loadSibling(cfg); } catch (e) { sibling = null; }
@@ -1363,31 +1448,53 @@
     return pack;
   }
 
-  async function refresh() {
+  const BACKGROUND_MS = 60000;
+  function assetKeys() { return Object.keys(ASSETS); }
+  function collectErrors() {
+    const errs = [];
+    assetKeys().forEach(function (key) {
+      const pack = state.data[key];
+      if (!pack) return;
+      (pack.errors || []).forEach(function (e) { errs.push(e); });
+    });
+    if (state.loadErrors) {
+      assetKeys().forEach(function (key) {
+        if (state.loadErrors[key]) errs.push(state.loadErrors[key]);
+      });
+    }
+    return errs;
+  }
+  async function refreshKeys(keys, opts) {
+    opts = opts || {};
     if (state.updating) return;
+    keys = keys || assetKeys();
+    if (!keys.length) return;
     state.updating = true;
     const stamp = $("stamp");
-    stamp.textContent = "갱신 중…";
-    stamp.className = "stamp";
-    $("btn-refresh").disabled = true;
-    const errs = [];
+    const quiet = !!opts.quiet && !!state.data[state.tab];
+    if (!quiet) {
+      stamp.textContent = "갱신 중…";
+      stamp.className = "stamp";
+      $("btn-refresh").disabled = true;
+    }
+    state.loadErrors = state.loadErrors || {};
     try {
-      const keys = ["gold", "btc", "mu"];
       const results = await Promise.allSettled(keys.map(loadOne));
       results.forEach(function (r, i) {
         const key = keys[i];
         if (r.status === "fulfilled") {
           state.data[key] = r.value;
-          (r.value.errors || []).forEach(function (e) { errs.push(e); });
+          delete state.loadErrors[key];
         } else {
-          errs.push(ASSETS[key].tab + ": " + (r.reason && r.reason.message ? r.reason.message : r.reason));
+          state.loadErrors[key] = ASSETS[key].tab + ": " + (r.reason && r.reason.message ? r.reason.message : r.reason);
         }
       });
-      state.errors = errs;
+      state.errors = collectErrors();
       const at = Date.now();
       const ok = Object.keys(state.data).length;
       stamp.textContent = "마지막 갱신 " + fmtKst(at, true) + (ok ? " · " + ok + "개 자산" : "");
-      if (errs.length && !ok) stamp.className = "stamp err";
+      if (state.errors.length && !ok) stamp.className = "stamp err";
+      else stamp.className = "stamp";
       render();
     } catch (e) {
       state.errors = [String(e && e.message || e)];
@@ -1399,12 +1506,24 @@
       $("btn-refresh").disabled = false;
     }
   }
+  function refresh() { return refreshKeys(assetKeys(), { quiet: false }); }
+  function refreshVisibleAndStale() {
+    const keys = [state.tab];
+    assetKeys().forEach(function (key) {
+      if (key === state.tab) return;
+      const pack = state.data[key];
+      if (!pack || !pack.at || (Date.now() - pack.at > BACKGROUND_MS)) keys.push(key);
+    });
+    return refreshKeys(keys, { quiet: true });
+  }
 
   document.querySelectorAll(".tabs button").forEach(function (btn) {
     btn.addEventListener("click", function () {
       state.tab = btn.getAttribute("data-tab");
       document.querySelectorAll(".tabs button").forEach(function (b) { b.classList.toggle("on", b === btn); });
       render();
+      const pack = state.data[state.tab];
+      if (!pack || !pack.at || (Date.now() - pack.at > REFRESH_MS)) refreshKeys([state.tab], { quiet: !!pack });
     });
   });
   $("btn-refresh").addEventListener("click", function () { refresh(); });
@@ -1416,7 +1535,7 @@
 
   bootMonetization();
   refresh();
-  state.timer = setInterval(refresh, REFRESH_MS);
+  state.timer = setInterval(refreshVisibleAndStale, REFRESH_MS);
   try { window.__LIQMAP__ = state; } catch (e) {}
 })();
 
