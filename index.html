@@ -327,6 +327,7 @@
     data: {},
     errors: [],
     updating: false,
+    inflight: {},
     timer: null,
     theme: "light",
     enabled: { binance: true, bybit: true, okx: true, hl: true }
@@ -387,6 +388,18 @@
     } finally { to.done(); }
   }
 
+  /* 짧은 캐시 + 동시 요청 합치기: 같은 요청이 동시에 여러 번 나가지 않게 한다. 실패는 캐시하지 않는다. */
+  const MEMO = {};
+  function memo(key, ttl, fn) {
+    const hit = MEMO[key];
+    if (hit && Date.now() - hit.at < ttl) return hit.p;
+    const p = fn();
+    MEMO[key] = { at: Date.now(), p: p };
+    p.catch(function () { if (MEMO[key] && MEMO[key].p === p) delete MEMO[key]; });
+    return p;
+  }
+  const STATIC_TTL = 3600000;
+
   function classifyErr(e) {
     const status = e && e.status;
     const msg = String(e && e.message || e || "");
@@ -433,13 +446,16 @@
     return row;
   }
 
-  async function hl(body) {
-    const res = await getJSON(HL, {
+  function hlRaw(body) {
+    return getJSON(HL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body)
     }, FETCH_MS);
-    return res;
+  }
+  async function hl(body) {
+    if (body.type === "metaAndAssetCtxs") return memo("hl:" + (body.dex || ""), 5000, function () { return hlRaw(body); });
+    return hlRaw(body);
   }
 
   function findCtx(meta, ctxs, coin) {
@@ -543,7 +559,7 @@
     const pack = await Promise.all([
       getJSON(base + "/tickers?category=linear&symbol=" + encodeURIComponent(sym)),
       getJSON(base + "/kline?category=linear&interval=60&limit=72&symbol=" + encodeURIComponent(sym)),
-      getJSON(base + "/instruments-info?category=linear&symbol=" + encodeURIComponent(sym)).catch(function () { return null; })
+      memo("bybit:info:" + sym, STATIC_TTL, function () { return getJSON(base + "/instruments-info?category=linear&symbol=" + encodeURIComponent(sym)); }).catch(function () { return null; })
     ]);
     const tickers = pack[0], kline = pack[1], info = pack[2];
     if (tickers && tickers.retCode && Number(tickers.retCode) !== 0) {
@@ -616,7 +632,7 @@
       getJSON(base + "/public/funding-rate?instId=" + id).catch(function () { return null; }),
       getJSON(base + "/market/ticker?instId=" + id).catch(function () { return null; }),
       getJSON(base + "/market/candles?bar=1H&limit=72&instId=" + id),
-      getJSON(base + "/public/instruments?instType=SWAP&instId=" + id).catch(function () { return null; })
+      memo("okx:inst:" + id, STATIC_TTL, function () { return getJSON(base + "/public/instruments?instType=SWAP&instId=" + id); }).catch(function () { return null; })
     ]);
     const oi = okxFirst(pack[0]);
     const px = okxFirst(pack[1]);
@@ -1434,14 +1450,15 @@
   async function loadOne(key) {
     const cfg = ASSETS[key];
     const errs = [];
+    const sibP = cfg.sibling ? loadSibling(cfg).catch(function () { return null; }) : null;
     const results = await Promise.all(EX_ORDER.map(function (ex) { return loadVenue(ex, cfg); }));
     const venues = results;
     const hard = venues.filter(function (v) { return v.status === "fail"; });
     const ok = venues.some(function (v) { return v.status === "ok"; });
-    if (!ok) throw new Error(cfg.tab + " 조회한 거래소 모두에서 시세를 받지 못했어요" + (hard.length ? " (" + hard.map(function (v) { return EXCHANGES[v.ex].label + ": " + (v.error || "실패"); }).join(", ") + ")" : ""));
+    if (!ok) { if (sibP) sibP.catch(function () {}); throw new Error(cfg.tab + " 조회한 거래소 모두에서 시세를 받지 못했어요" + (hard.length ? " (" + hard.map(function (v) { return EXCHANGES[v.ex].label + ": " + (v.error || "실패"); }).join(", ") + ")" : "")); }
     let sibling = null;
-    if (cfg.sibling) {
-      try { sibling = await loadSibling(cfg); } catch (e) { sibling = null; }
+    if (sibP) {
+      try { sibling = await sibP; } catch (e) { sibling = null; }
     }
     const pack = { venues: venues, sibling: sibling, at: Date.now(), errors: errs };
     rebuildPack(pack);
@@ -1466,9 +1483,9 @@
   }
   async function refreshKeys(keys, opts) {
     opts = opts || {};
-    if (state.updating) return;
-    keys = keys || assetKeys();
+    keys = (keys || assetKeys()).filter(function (k) { return !state.inflight[k]; });
     if (!keys.length) return;
+    keys.forEach(function (k) { state.inflight[k] = true; });
     state.updating = true;
     const stamp = $("stamp");
     const quiet = !!opts.quiet && !!state.data[state.tab];
@@ -1502,19 +1519,15 @@
       stamp.className = "stamp err";
       render();
     } finally {
-      state.updating = false;
+      keys.forEach(function (k) { delete state.inflight[k]; });
+      state.updating = Object.keys(state.inflight).length > 0;
       $("btn-refresh").disabled = false;
     }
   }
-  function refresh() { return refreshKeys(assetKeys(), { quiet: false }); }
+  function refresh() { return refreshKeys([state.tab], { quiet: false }); }
   function refreshVisibleAndStale() {
-    const keys = [state.tab];
-    assetKeys().forEach(function (key) {
-      if (key === state.tab) return;
-      const pack = state.data[key];
-      if (!pack || !pack.at || (Date.now() - pack.at > BACKGROUND_MS)) keys.push(key);
-    });
-    return refreshKeys(keys, { quiet: true });
+    if (document.hidden) return Promise.resolve();
+    return refreshKeys([state.tab], { quiet: true });
   }
 
   document.querySelectorAll(".tabs button").forEach(function (btn) {
@@ -1536,6 +1549,11 @@
   bootMonetization();
   refresh();
   state.timer = setInterval(refreshVisibleAndStale, REFRESH_MS);
+  document.addEventListener("visibilitychange", function () {
+    if (document.hidden) return;
+    const pack = state.data[state.tab];
+    if (!pack || !pack.at || (Date.now() - pack.at > REFRESH_MS)) refreshVisibleAndStale();
+  });
   try { window.__LIQMAP__ = state; } catch (e) {}
 })();
 
