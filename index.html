@@ -454,7 +454,7 @@
     }, FETCH_MS);
   }
   async function hl(body) {
-    if (body.type === "metaAndAssetCtxs") return memo("hl:" + (body.dex || ""), 5000, function () { return hlRaw(body); });
+    if (body.type === "metaAndAssetCtxs") return memo("hl:" + (body.dex || ""), 30000, function () { return hlRaw(body); });
     return hlRaw(body);
   }
 
@@ -1524,10 +1524,22 @@
       $("btn-refresh").disabled = false;
     }
   }
-  function refresh() { return refreshKeys([state.tab], { quiet: false }); }
+  function refresh() { return refreshKeys(assetKeys(), { quiet: false }); }
   function refreshVisibleAndStale() {
     if (document.hidden) return Promise.resolve();
     return refreshKeys([state.tab], { quiet: true });
+  }
+  function prefetchRest() {
+    const rest = assetKeys().filter(function (key) {
+      return !state.data[key] && !state.inflight[key];
+    });
+    if (!rest.length) return Promise.resolve();
+    return refreshKeys(rest, { quiet: true });
+  }
+  function bootLoad() {
+    return Promise.resolve(refreshKeys([state.tab], { quiet: false })).then(function () {
+      setTimeout(prefetchRest, 2000);
+    });
   }
 
   document.querySelectorAll(".tabs button").forEach(function (btn) {
@@ -1547,7 +1559,7 @@
   });
 
   bootMonetization();
-  refresh();
+  bootLoad();
   state.timer = setInterval(refreshVisibleAndStale, REFRESH_MS);
   document.addEventListener("visibilitychange", function () {
     if (document.hidden) return;
